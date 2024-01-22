@@ -31,3 +31,5 @@ TODO: configure CloudWatch to S3 exporter
 `brew install duckdb``
 
 `./scripts/duckdb/create_db.sh`
+
+`./scripts/duckdb/create_tables.sh`
