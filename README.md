@@ -16,6 +16,6 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 - Data analysts looking to combine and visualize complex datasets.
 - Anyone enthusiastic about Python and open-source data analysis tools.
 
-**Get Started:**
-Dive into our documentation to set up your environment and start exploring your data in a whole new way. Contribute, fork, star, and join us on this exciting journey in the world of data!
-_Grab your data paddles and join the QuackMeUp community now!_
+## Get Started
+
+`cp .env.example .env` and then edit `.env`
