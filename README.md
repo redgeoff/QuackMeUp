@@ -1,6 +1,8 @@
 # QuackMeUp: Streamlined Data Analytics in a Pythonic Pond
 :duck: _Dive into the world of data with a quack!_
 
+![QuackMeUp](QuackMeUp.png)
+
 ## Overview
 QuackMeUp is an open-source, Python-based toolkit designed to simplify the integration and analysis of data from various sources like PostgreSQL and AWS CloudWatch, using the power of DuckDB and Metabase. It's a one-stop solution for software engineers and data analysts looking to quack their way through data aggregation, transformation, and visualization.
 
