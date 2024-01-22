@@ -28,7 +28,7 @@ TODO: configure CloudWatch to S3 exporter
 
 `./scripts/s3/download_logs.sh`
 
-`brew install duckdb``
+`brew install duckdb` # TODO: install via docker-compose?
 
 `./scripts/duckdb/create_db.sh`
 
