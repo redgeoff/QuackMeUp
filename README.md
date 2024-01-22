@@ -26,7 +26,7 @@ Install the awscli and run `aws configure`
 
 TODO: configure CloudWatch to S3 exporter
 
-`./scripts/download_logs.sh`
+`./scripts/s3/download_logs.sh`
 
 `brew install duckdb``
 
