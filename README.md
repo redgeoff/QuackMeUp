@@ -18,4 +18,10 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 
 ## Get Started
 
+Install the awscli and run `aws configure`
+
 `cp .env.example .env` and then edit `.env`
+
+TODO: configure CloudWatch to S3 exporter
+
+`./scripts/download_logs.sh`
