@@ -38,4 +38,16 @@ TODO: configure CloudWatch to S3 exporter
 
 `python3.11 -m pip install poetry`
 
+`poetry install`
+
 `poetry run pre-commit install`
+
+## Running tests
+
+`make lint`
+
+`make mypy`
+
+`make test`
+
+`make ci`

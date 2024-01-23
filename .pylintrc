@@ -330,8 +330,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-; max-line-length=100
-max-line-length=102 # Bumped from 100 as the wordwrap in VS Code sometimes wraps to 102
+max-line-length=100
 
 # Maximum number of lines in a module.
 max-module-lines=1000
@@ -424,16 +423,8 @@ disable=raw-checker-failed,
         deprecated-pragma,
         use-symbolic-message-instead,
 
-        # Non-standard:
-        fixme,
-        missing-function-docstring,
         missing-module-docstring,
-        missing-class-docstring,
-        missing-timeout,
-        invalid-name,
-        redefined-outer-name, # needed for test fixtures
-        too-many-ancestors,
-        too-many-locals,
+        missing-function-docstring
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -512,7 +503,7 @@ ignore-imports=yes
 ignore-signatures=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=8
+min-similarity-lines=4
 
 
 [SPELLING]
