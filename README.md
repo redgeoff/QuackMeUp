@@ -46,6 +46,8 @@ TODO: configure CloudWatch to S3 exporter
 
 `make format_logs`
 
+`./scripts/duckdb/import_logs.sh`
+
 ## Running tests
 
 `make lint`
