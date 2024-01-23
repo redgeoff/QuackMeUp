@@ -11,10 +11,10 @@ def test_extract_json_part():
 
 def test_is_json():
     json_part = '{"key": "value"}'
-    assert is_json(json_part) == True
+    assert is_json(json_part) is True
 
     non_json_part = "not a json string"
-    assert is_json(non_json_part) == False
+    assert is_json(non_json_part) is False
 
 
 def test_process_file(tmp_path):
