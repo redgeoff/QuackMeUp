@@ -55,5 +55,6 @@ TODO: configure CloudWatch to S3 exporter
 `make mypy`
 
 `make test`
+`make test ARGS="-k test_extract_json_part"`
 
 `make ci`

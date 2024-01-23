@@ -5,7 +5,7 @@ mypy:
 	poetry run mypy src
 
 test:
-	poetry run pytest
+	poetry run pytest $(ARGS)
 
 ci:
 	make lint && make mypy && make test
