@@ -33,3 +33,21 @@ TODO: configure CloudWatch to S3 exporter
 `./scripts/duckdb/create_db.sh`
 
 `./scripts/duckdb/create_tables.sh`
+
+`brew install python@3.11`
+
+`python3.11 -m pip install poetry`
+
+`poetry install`
+
+`poetry run pre-commit install`
+
+## Running tests
+
+`make lint`
+
+`make mypy`
+
+`make test`
+
+`make ci`
