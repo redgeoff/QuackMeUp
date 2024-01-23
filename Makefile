@@ -5,7 +5,10 @@ mypy:
 	poetry run mypy src
 
 test:
-	poetry run pytest
+	poetry run pytest $(ARGS)
 
 ci:
 	make lint && make mypy && make test
+
+format_logs:
+	poetry run python -m src.format_logs

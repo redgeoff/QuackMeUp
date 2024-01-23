@@ -18,15 +18,13 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 - Data analysts looking to combine and visualize complex datasets.
 - Anyone enthusiastic about Python and open-source data analysis tools.
 
-## Get Started
+## Installation
 
 Install the awscli and run `aws configure`
 
 `cp .env.example .env` and then edit `.env`
 
 TODO: configure CloudWatch to S3 exporter
-
-`./scripts/s3/download_logs.sh`
 
 `brew install duckdb` # TODO: install via docker-compose?
 
@@ -42,6 +40,14 @@ TODO: configure CloudWatch to S3 exporter
 
 `poetry run pre-commit install`
 
+## Execute pipeline
+
+`./scripts/s3/download_logs.sh`
+
+`make format_logs`
+
+`./scripts/duckdb/import_logs.sh`
+
 ## Running tests
 
 `make lint`
@@ -49,5 +55,6 @@ TODO: configure CloudWatch to S3 exporter
 `make mypy`
 
 `make test`
+`make test ARGS="-k test_extract_json_part"`
 
 `make ci`
