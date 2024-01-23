@@ -1,0 +1,84 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, release]
+  pull_request:
+    branches: [main]
+
+  # To SSH into the test session:
+  #   1. On the failed GitHub action run, select "Re-run all jobs"
+  #   2. Check the "Enable debug logging" and click "Re-run jobs"
+  #   3. Use the SSH details displayed in the tmate section of the GitHub action log
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
+
+# env:
+#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   POSTGRES_CONNECTION_STRING: postgresql://postgres:postgres@localhost:54322/postgres
+#   REGION: TODO
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: "3.11"
+
+      - name: cache poetry install
+        uses: actions/cache@v3
+        with:
+          path: ~/.local
+          key: poetry-1.5.1-20231121
+
+      - uses: snok/install-poetry@v1.3.4
+        with:
+          version: 1.5.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Update package lists
+        run: sudo apt-get update
+
+      - name: cache deps
+        id: cache-deps
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: pydeps-${{ hashFiles('**/poetry.lock') }}-20231121
+
+      - run: poetry install --no-interaction --no-root
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+
+      - run: poetry install --no-interaction
+
+      # For some reason the if statements are not working so you'll have to just uncomment this
+      # section when you need ssh access.
+      #
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   # if: ${{ failure() }}
+      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      #   # if: ${{ github.event_name == 'workflow_dispatch' }}
+      #   # if: ${{ inputs.debug_enabled }}
+
+      - name: Lint
+        run: make lint
+
+      - name: Type checking
+        run: make mypy
+
+      - name: Run tests
+        run: make test
