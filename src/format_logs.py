@@ -1,9 +1,8 @@
 import gzip
 import json
 import os
-from typing import IO
 
-from dirs import ignored_dir
+from src.dirs import ignored_dir
 
 
 def extract_json_part(line: str) -> str:
@@ -43,7 +42,7 @@ def process_file(file_path: str, output_dir: str, input_dir: str) -> None:
 
 
 def format_logs(input_dir: str, output_dir: str) -> None:
-    for root, dirs, files in os.walk(input_dir):
+    for root, _dirs, files in os.walk(input_dir):
         for file in files:
             if file.endswith(".gz"):
                 file_path: str = os.path.join(root, file)

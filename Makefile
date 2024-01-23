@@ -11,4 +11,4 @@ ci:
 	make lint && make mypy && make test
 
 format_logs:
-	poetry run python src/format_logs.py
+	poetry run python -m src.format_logs
