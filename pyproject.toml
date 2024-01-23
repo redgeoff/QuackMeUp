@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "quack_me_up"
+version = "0.1.0"
+description = ""
+authors = ["Geoff Cox <redgeoff@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.0"
+python-json-logger = "^2.0.7"
+aws-lambda-typing = "^2.18.0"
+boto3 = "^1.28.32"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
+pre-commit = "^3.3.3"
+black = "^23.7.0"
+pytest = "^7.4.0"
+pylint = "^2.17.4"
+isort = "^5.12.0"
+pytest-watch = "^4.2.0"
+freezegun = "^1.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
