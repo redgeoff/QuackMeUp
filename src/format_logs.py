@@ -39,7 +39,7 @@ def process_file(file_path: str, output_dir: str, input_dir: str) -> None:
         for line in f_in:
             json_part = extract_json_part(line.strip())
             if is_json(json_part):
-                f_out.write(json_part)
+                f_out.write(json_part + "\n")
 
 
 def format_logs(input_dir: str, output_dir: str) -> None:
