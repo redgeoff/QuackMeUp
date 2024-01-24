@@ -20,6 +20,8 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 
 ## Installation
 
+### Install dependencies
+
 Install the awscli and run `aws configure`
 
 `cp .env.example .env` and then edit `.env`
@@ -35,6 +37,8 @@ TODO: configure CloudWatch to S3 exporter
 `poetry run pre-commit install`
 
 `brew install duckdb` # TODO: install via docker-compose?
+
+### Install QuackMeUp
 
 `./scripts/duckdb/create_db.sh`
 
