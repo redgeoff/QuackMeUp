@@ -40,6 +40,12 @@ TODO: configure CloudWatch to S3 exporter
 
 `poetry run pre-commit install`
 
+`./scripts/metabase/build_docker.sh`
+
+`docker-compose up -d`
+
+Seed the metabase config: `./scripts/metabase/import_db.sh`
+
 ## Execute pipeline
 
 `./scripts/s3/download_logs.sh`
@@ -48,16 +54,20 @@ TODO: configure CloudWatch to S3 exporter
 
 `./scripts/duckdb/import_logs.sh`
 
-## Running Metabase
-
-`./scripts/metabase/build_docker.sh`
-
-`docker-compose up -d`
+## Accessing Metabase
 
 Visit [http://localhost:3000](http://localhost:3000) and log in with:
 
   - Email: quackmeup@example.com
   - Password: E!v_#nc$48pqfZJ
+
+## Starting fresh
+
+`docker-compose down`
+
+`./scripts/metabase/delete_pgdata.sh`
+
+`./scripts/duckdb/drop_db.sh`
 
 ## Running tests
 
