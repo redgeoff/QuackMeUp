@@ -26,12 +26,6 @@ Install the awscli and run `aws configure`
 
 TODO: configure CloudWatch to S3 exporter
 
-`brew install duckdb` # TODO: install via docker-compose?
-
-`./scripts/duckdb/create_db.sh`
-
-`./scripts/duckdb/create_tables.sh`
-
 `brew install python@3.11`
 
 `python3.11 -m pip install poetry`
@@ -39,6 +33,12 @@ TODO: configure CloudWatch to S3 exporter
 `poetry install`
 
 `poetry run pre-commit install`
+
+`brew install duckdb` # TODO: install via docker-compose?
+
+`./scripts/duckdb/create_db.sh`
+
+`./scripts/duckdb/create_tables.sh`
 
 `./scripts/metabase/build_docker.sh`
 
@@ -68,6 +68,8 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
 `./scripts/metabase/delete_pgdata.sh`
 
 `./scripts/duckdb/drop_db.sh`
+
+Then repeat the installation
 
 ## Running tests
 
