@@ -26,11 +26,12 @@ RUN chown -R metabase /app
 
 # Install metabase_duckdb_driver
 ENV MB_PLUGINS_DIR=/home/plugins/
-ADD https://github.com/AlexR2D2/metabase_duckdb_driver/releases/download/0.1.6/duckdb.metabase-driver.jar /home/plugins/
-# RUN chmod 744 /home/plugins/duckdb.metabase-driver.jar
-RUN chown -R metabase /home/plugins/duckdb.metabase-driver.jar
+ADD https://github.com/AlexR2D2/metabase_duckdb_driver/releases/download/0.2.3/duckdb.metabase-driver.jar /home/plugins/
+RUN chmod 744 /home/plugins/duckdb.metabase-driver.jar
+RUN chown -R metabase /home/plugins
 
 USER metabase
+
 # expose our default runtime port
 EXPOSE 3000
 
