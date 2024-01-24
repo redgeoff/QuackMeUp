@@ -48,6 +48,17 @@ TODO: configure CloudWatch to S3 exporter
 
 `./scripts/duckdb/import_logs.sh`
 
+## Running Metabase
+
+`./scripts/metabase/build_docker.sh`
+
+`docker-compose up -d`
+
+Visit [http://localhost:3000](http://localhost:3000) and log in with:
+
+  - Email: quackmeup@example.com
+  - Password: E!v_#nc$48pqfZJ
+
 ## Running tests
 
 `make lint`

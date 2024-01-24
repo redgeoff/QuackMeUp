@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "quack_me_up"
+name = "quackmeup"
 version = "0.1.0"
 description = ""
 authors = ["Geoff Cox <redgeoff@gmail.com>"]
