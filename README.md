@@ -20,17 +20,13 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 
 ## Installation
 
+### Install dependencies
+
 Install the awscli and run `aws configure`
 
 `cp .env.example .env` and then edit `.env`
 
 TODO: configure CloudWatch to S3 exporter
-
-`brew install duckdb` # TODO: install via docker-compose?
-
-`./scripts/duckdb/create_db.sh`
-
-`./scripts/duckdb/create_tables.sh`
 
 `brew install python@3.11`
 
@@ -40,6 +36,20 @@ TODO: configure CloudWatch to S3 exporter
 
 `poetry run pre-commit install`
 
+`brew install duckdb` # TODO: install via docker-compose?
+
+### Install QuackMeUp
+
+`./scripts/duckdb/create_db.sh`
+
+`./scripts/duckdb/create_tables.sh`
+
+`./scripts/metabase/build_docker.sh`
+
+`docker-compose up -d`
+
+Seed the metabase config: `./scripts/metabase/import_db.sh`
+
 ## Execute pipeline
 
 `./scripts/s3/download_logs.sh`
@@ -48,16 +58,22 @@ TODO: configure CloudWatch to S3 exporter
 
 `./scripts/duckdb/import_logs.sh`
 
-## Running Metabase
-
-`./scripts/metabase/build_docker.sh`
-
-`docker-compose up -d`
+## Accessing Metabase
 
 Visit [http://localhost:3000](http://localhost:3000) and log in with:
 
   - Email: quackmeup@example.com
   - Password: E!v_#nc$48pqfZJ
+
+## Starting fresh
+
+`docker-compose down`
+
+`./scripts/metabase/delete_pgdata.sh`
+
+`./scripts/duckdb/drop_db.sh`
+
+Then repeat the installation
 
 ## Running tests
 
