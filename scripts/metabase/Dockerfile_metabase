@@ -30,7 +30,11 @@ ADD https://github.com/AlexR2D2/metabase_duckdb_driver/releases/download/0.2.3/d
 RUN chmod 744 /home/plugins/duckdb.metabase-driver.jar
 RUN chown -R metabase /home/plugins
 
-# USER metabase
+# Prevent problem with duckdb not being able to download extensions
+RUN mkdir /home/metabase
+RUN chown -R metabase /home/metabase
+
+# USER metabase # TODO: restore after all debugging complete
 
 # expose our default runtime port
 EXPOSE 3000
