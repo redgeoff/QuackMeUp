@@ -29,6 +29,7 @@ services:
       MB_DB_USER: postgres
       MB_DB_PASS: postgres
       MB_DB_HOST: host.docker.internal
+      MB_PLUGINS_DIR: /home/plugins
     expose:
       - 3000
     ports:
