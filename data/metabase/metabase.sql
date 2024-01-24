@@ -3369,6 +3369,7 @@ COPY public.connection_impersonations (id, db_id, group_id, attribute) FROM stdi
 
 COPY public.core_session (id, user_id, created_at, anti_csrf_token) FROM stdin;
 d9b50c3e-6a36-44f9-b569-41721124a5e0	1	2024-01-24 01:08:47.766063+00	\N
+48987b52-5445-4cde-970f-d8830b6975b5	1	2024-01-24 01:39:05.597994+00	\N
 \.
 
 
@@ -3377,7 +3378,7 @@ d9b50c3e-6a36-44f9-b569-41721124a5e0	1	2024-01-24 01:08:47.766063+00	\N
 --
 
 COPY public.core_user (id, email, first_name, last_name, password, password_salt, date_joined, last_login, is_superuser, is_active, reset_token, reset_triggered, is_qbnewb, login_attributes, updated_at, sso_source, locale, is_datasetnewb, settings) FROM stdin;
-1	quackmeup@example.com	Quack	MeUp	$2a$10$gHx5vorwj/.U86DnNx9cXOlnVwPJu1Kuprgi2D06Hd7BZOHVPCw6K	5b68e2e3-5aa8-4725-9504-52a3e706e41b	2024-01-24 01:08:47.766063+00	2024-01-24 01:08:48.222295+00	t	t	\N	\N	t	\N	2024-01-24 01:08:48.222295	\N	\N	t	{"last-acknowledged-version":"v0.48.3"}
+1	quackmeup@example.com	Quack	MeUp	$2a$10$gHx5vorwj/.U86DnNx9cXOlnVwPJu1Kuprgi2D06Hd7BZOHVPCw6K	5b68e2e3-5aa8-4725-9504-52a3e706e41b	2024-01-24 01:08:47.766063+00	2024-01-24 01:39:05.711138+00	t	t	\N	\N	t	\N	2024-01-24 01:39:05.711138	\N	\N	t	{"last-acknowledged-version":"v0.48.3"}
 \.
 
 
@@ -3684,6 +3685,7 @@ COPY public.label (id, name, slug, icon) FROM stdin;
 --
 
 COPY public.login_history (id, "timestamp", user_id, session_id, device_id, device_description, ip_address) FROM stdin;
+1	2024-01-24 01:39:05.716661+00	1	48987b52-5445-4cde-970f-d8830b6975b5	1334017d-31ed-404c-9bf7-796d891a7676	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36	192.168.65.1
 \.
 
 
@@ -3692,7 +3694,8 @@ COPY public.login_history (id, "timestamp", user_id, session_id, device_id, devi
 --
 
 COPY public.metabase_database (id, created_at, updated_at, name, description, details, engine, is_sample, is_full_sync, points_of_interest, caveats, metadata_sync_schedule, cache_field_values_schedule, timezone, is_on_demand, auto_run_queries, refingerprint, cache_ttl, initial_sync_status, creator_id, settings, dbms_version, is_audit) FROM stdin;
-1	2024-01-24 01:01:21.076865+00	2024-01-24 01:01:46.797171+00	Sample Database	Some example data for you to play around with as you embark on your Metabase journey.	{"db":"zip:/app/metabase.jar!/sample-database.db;USER=GUEST;PASSWORD=guest"}	h2	t	t	You can find all sorts of different joinable tables ranging from products to people to reviews here.	You probably don't want to use this for your business-critical analyses, but hey, it's your world, we're just living in it.	0 10 * * * ? *	0 0 5 * * ? *	UTC	f	t	\N	\N	complete	\N	\N	{"flavor":"H2","version":"2.1.214 (2022-06-13)","semantic-version":[2,1]}	f
+1	2024-01-24 01:01:21.076865+00	2024-01-24 01:38:44.045173+00	Sample Database	Some example data for you to play around with as you embark on your Metabase journey.	{"db":"file:/home/plugins/sample-database.db;USER=GUEST;PASSWORD=guest"}	h2	t	t	You can find all sorts of different joinable tables ranging from products to people to reviews here.	You probably don't want to use this for your business-critical analyses, but hey, it's your world, we're just living in it.	0 10 * * * ? *	0 0 5 * * ? *	UTC	f	t	\N	\N	complete	\N	\N	{"flavor":"H2","version":"2.1.214 (2022-06-13)","semantic-version":[2,1]}	f
+2	2024-01-24 01:40:32.100636+00	2024-01-24 01:40:32.81572+00	MyDuckDB	\N	{"database_file":"/container/directory/my.db","read_only":true}	duckdb	f	t	\N	\N	0 14 * * * ? *	0 0 21 * * ? *	\N	f	t	\N	\N	complete	1	\N	{"flavor":"DuckDB","version":"v0.9.1","semantic-version":[1,0]}	f
 \.
 
 
@@ -3772,6 +3775,54 @@ COPY public.metabase_field (id, created_at, updated_at, name, base_type, semanti
 45	2024-01-24 01:01:21.908375+00	2024-01-24 01:01:41.219084+00	SOURCE	type/Text	type/Source	t	The channel through which we acquired this user. Valid values include: Affiliate, Facebook, Google, Organic and Twitter	t	8	5	\N	Source	normal	\N	2024-01-24 01:01:41.219084+00	\N	\N	{"global":{"distinct-count":5,"nil%":0.0},"type":{"type/Text":{"percent-json":0.0,"percent-url":0.0,"percent-email":0.0,"percent-state":0.0,"average-length":7.4084}}}	5	CHARACTER VARYING	auto-list	\N	8	0	type/Text	\N	\N	f	f	f
 57	2024-01-24 01:01:21.908375+00	2024-01-24 01:01:41.219084+00	LATITUDE	type/Float	type/Latitude	t	This is the latitude of the user on sign-up. It might be updated in the future to the last seen location.	t	11	5	\N	Latitude	normal	\N	2024-01-24 01:01:41.219084+00	\N	\N	{"global":{"distinct-count":2491,"nil%":0.0},"type":{"type/Number":{"min":25.775827,"q1":35.302705923023126,"q3":43.773802584662,"max":70.6355001,"sd":6.390832341883712,"avg":39.87934670484002}}}	5	DOUBLE PRECISION	\N	\N	11	0	type/Float	\N	\N	f	f	f
 61	2024-01-24 01:01:21.936268+00	2024-01-24 01:01:41.219084+00	RATING	type/Float	type/Score	t	The average rating users have given the product. This ranges from 1 - 5	t	6	1	\N	Rating	normal	\N	2024-01-24 01:01:41.219084+00	\N	\N	{"global":{"distinct-count":23,"nil%":0.0},"type":{"type/Number":{"min":0.0,"q1":3.5120465053408525,"q3":4.216124969497314,"max":5.0,"sd":1.3605488657451452,"avg":3.4715}}}	5	DOUBLE PRECISION	\N	\N	6	0	type/Float	\N	\N	f	f	f
+72	2024-01-24 01:40:32.564645+00	2024-01-24 01:40:32.564645+00	group_id	type/Text	\N	t	\N	t	3	9	\N	Group ID	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
+73	2024-01-24 01:40:32.564645+00	2024-01-24 01:40:32.564645+00	updated_at	type/Float	\N	t	\N	t	4	9	\N	Updated At	normal	\N	\N	\N	\N	\N	0	DOUBLE	\N	\N	4	0	type/Float	\N	\N	f	f	f
+74	2024-01-24 01:40:32.564645+00	2024-01-24 01:40:32.564645+00	uuid	type/Text	\N	t	\N	t	0	9	\N	UUID	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	0	0	type/Text	\N	\N	f	f	f
+75	2024-01-24 01:40:32.564645+00	2024-01-24 01:40:32.564645+00	namespace	type/Text	\N	t	\N	t	2	9	\N	Namespace	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	2	0	type/Text	\N	\N	f	f	f
+76	2024-01-24 01:40:32.564645+00	2024-01-24 01:40:32.564645+00	key	type/Text	\N	t	\N	t	1	9	\N	Key	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	1	0	type/Text	\N	\N	f	f	f
+77	2024-01-24 01:40:32.599304+00	2024-01-24 01:40:32.599304+00	session_id	type/Text	\N	t	\N	t	1	10	\N	Session ID	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	1	0	type/Text	\N	\N	f	f	f
+78	2024-01-24 01:40:32.599304+00	2024-01-24 01:40:32.599304+00	message	type/Text	\N	t	\N	t	2	10	\N	Message	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	2	0	type/Text	\N	\N	f	f	f
+79	2024-01-24 01:40:32.599304+00	2024-01-24 01:40:32.599304+00	id	type/Integer	\N	t	\N	t	0	10	\N	ID	normal	\N	\N	\N	\N	\N	0	INTEGER	\N	\N	0	0	type/Integer	\N	\N	f	f	f
+81	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	cluster_type	type/Text	\N	t	\N	t	3	12	\N	Cluster Type	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
+82	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	cluster_value	type/Text	\N	t	\N	t	4	12	\N	Cluster Value	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	4	0	type/Text	\N	\N	f	f	f
+83	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	updated_at	type/DateTime	\N	t	\N	t	2	12	\N	Updated At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	2	0	type/DateTime	\N	\N	f	f	f
+84	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	name	type/Text	\N	t	\N	t	6	12	\N	Name	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	6	0	type/Text	\N	\N	f	f	f
+85	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	id	type/UUID	\N	t	\N	t	0	12	\N	ID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	0	0	type/UUID	\N	\N	f	f	f
+86	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	value	type/Text	\N	t	\N	t	7	12	\N	Value	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	7	0	type/Text	\N	\N	f	f	f
+87	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	external_entity	type/Text	\N	t	\N	t	5	12	\N	External Entity	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	5	0	type/Text	\N	\N	f	f	f
+88	2024-01-24 01:40:32.652199+00	2024-01-24 01:40:32.652199+00	created_at	type/DateTime	\N	t	\N	t	1	12	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	1	0	type/DateTime	\N	\N	f	f	f
+89	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	cluster_type	type/Text	\N	t	\N	t	3	13	\N	Cluster Type	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
+90	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	updated_at	type/DateTime	\N	t	\N	t	6	13	\N	Updated At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP	\N	\N	6	0	type/DateTime	\N	\N	f	f	f
+91	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	cluster_value	type/Text	\N	t	\N	t	4	13	\N	Cluster Value	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	4	0	type/Text	\N	\N	f	f	f
+92	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	name	type/Text	\N	t	\N	t	0	13	\N	Name	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	0	0	type/Text	\N	\N	f	f	f
+93	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	created_at	type/DateTime	\N	t	\N	t	5	13	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP	\N	\N	5	0	type/DateTime	\N	\N	f	f	f
+94	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	uuid	type/UUID	\N	t	\N	t	2	13	\N	UUID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	2	0	type/UUID	\N	\N	f	f	f
+95	2024-01-24 01:40:32.671713+00	2024-01-24 01:40:32.671713+00	cmetadata	type/Text	\N	t	\N	t	1	13	\N	Cmetadata	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	1	0	type/Text	\N	\N	f	f	f
+96	2024-01-24 01:40:32.687904+00	2024-01-24 01:40:32.687904+00	user_uuid	type/UUID	\N	t	\N	t	2	14	\N	User UUID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	2	0	type/UUID	\N	\N	f	f	f
+97	2024-01-24 01:40:32.687904+00	2024-01-24 01:40:32.687904+00	state	type/Text	\N	t	\N	t	4	14	\N	State	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	4	0	type/Text	\N	\N	f	f	f
+98	2024-01-24 01:40:32.687904+00	2024-01-24 01:40:32.687904+00	access_code	type/Text	\N	t	\N	t	3	14	\N	Access Code	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
+99	2024-01-24 01:40:32.687904+00	2024-01-24 01:40:32.687904+00	uuid	type/UUID	\N	t	\N	t	0	14	\N	UUID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	0	0	type/UUID	\N	\N	f	f	f
+100	2024-01-24 01:40:32.687904+00	2024-01-24 01:40:32.687904+00	created_at	type/DateTime	\N	t	\N	t	1	14	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	1	0	type/DateTime	\N	\N	f	f	f
+101	2024-01-24 01:40:32.701361+00	2024-01-24 01:40:32.701361+00	value	type/Text	\N	t	\N	t	3	15	\N	Value	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
+102	2024-01-24 01:40:32.701361+00	2024-01-24 01:40:32.701361+00	name	type/Text	\N	t	\N	t	2	15	\N	Name	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	2	0	type/Text	\N	\N	f	f	f
+103	2024-01-24 01:40:32.701361+00	2024-01-24 01:40:32.701361+00	id	type/BigInteger	\N	t	\N	t	0	15	\N	ID	normal	\N	\N	\N	\N	\N	0	BIGINT	\N	\N	0	0	type/BigInteger	\N	\N	f	f	f
+104	2024-01-24 01:40:32.701361+00	2024-01-24 01:40:32.701361+00	created_at	type/DateTime	\N	t	\N	t	1	15	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	1	0	type/DateTime	\N	\N	f	f	f
+105	2024-01-24 01:40:32.714212+00	2024-01-24 01:40:32.714212+00	updated_at	type/DateTime	\N	t	\N	t	2	16	\N	Updated At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	2	0	type/DateTime	\N	\N	f	f	f
+106	2024-01-24 01:40:32.714212+00	2024-01-24 01:40:32.714212+00	id	type/UUID	\N	t	\N	t	0	16	\N	ID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	0	0	type/UUID	\N	\N	f	f	f
+107	2024-01-24 01:40:32.714212+00	2024-01-24 01:40:32.714212+00	created_at	type/DateTime	\N	t	\N	t	1	16	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP WITH TIME ZONE	\N	\N	1	0	type/DateTime	\N	\N	f	f	f
+108	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	integration_json	type/Text	\N	t	\N	t	1	17	\N	Integration Json	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	1	0	type/Text	\N	\N	f	f	f
+109	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	cluster_type	type/Text	\N	t	\N	t	5	17	\N	Cluster Type	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	5	0	type/Text	\N	\N	f	f	f
+110	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	external_entity	type/Text	\N	t	\N	t	2	17	\N	External Entity	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	2	0	type/Text	\N	\N	f	f	f
+111	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	updated_at	type/DateTime	\N	t	\N	t	4	17	\N	Updated At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP	\N	\N	4	0	type/DateTime	\N	\N	f	f	f
+112	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	id	type/UUID	\N	t	\N	t	0	17	\N	ID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	0	0	type/UUID	\N	\N	f	f	f
+113	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	created_at	type/DateTime	\N	t	\N	t	3	17	\N	Created At	normal	\N	\N	\N	\N	\N	0	TIMESTAMP	\N	\N	3	0	type/DateTime	\N	\N	f	f	f
+114	2024-01-24 01:40:32.73088+00	2024-01-24 01:40:32.73088+00	cluster_value	type/Text	\N	t	\N	t	6	17	\N	Cluster Value	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	6	0	type/Text	\N	\N	f	f	f
+115	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	uuid	type/UUID	\N	t	\N	t	5	18	\N	UUID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	5	0	type/UUID	\N	\N	f	f	f
+116	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	collection_id	type/UUID	\N	t	\N	t	0	18	\N	Collection ID	normal	\N	\N	\N	\N	\N	0	UUID	\N	\N	0	0	type/UUID	\N	\N	f	f	f
+117	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	document	type/Text	\N	t	\N	t	2	18	\N	Document	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	2	0	type/Text	\N	\N	f	f	f
+118	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	custom_id	type/Text	\N	t	\N	t	4	18	\N	Custom ID	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	4	0	type/Text	\N	\N	f	f	f
+119	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	embedding	type/Text	\N	t	\N	t	1	18	\N	Embedding	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	1	0	type/Text	\N	\N	f	f	f
+120	2024-01-24 01:40:32.746454+00	2024-01-24 01:40:32.746454+00	cmetadata	type/Text	\N	t	\N	t	3	18	\N	Cmetadata	normal	\N	\N	\N	\N	\N	0	VARCHAR	\N	\N	3	0	type/Text	\N	\N	f	f	f
 \.
 
 
@@ -3820,6 +3871,16 @@ COPY public.metabase_table (id, created_at, updated_at, name, description, entit
 5	2024-01-24 01:01:21.668916+00	2024-01-24 01:01:41.196515+00	PEOPLE	Information on the user accounts registered with Sample Company.	entity/UserTable	t	1	People	\N	PUBLIC	Is it? You tell us!	Note that employees and customer support staff will have accounts.	f	database	complete	f
 1	2024-01-24 01:01:21.630519+00	2024-01-24 01:01:41.198481+00	PRODUCTS	Includes a catalog of all the products ever sold by the famed Sample Company.	entity/ProductTable	t	1	Products	\N	PUBLIC	Is it? You tell us!	The rating column is an integer from 1-5 where 1 is dreadful and 5 is the best thing ever.	f	database	complete	f
 8	2024-01-24 01:01:21.687314+00	2024-01-24 01:01:41.200483+00	REVIEWS	Reviews that Sample Company customers have left on our products.	entity/GenericTable	t	1	Reviews	\N	PUBLIC	Is it? You tell us!	These reviews aren't tied to orders so it is possible people have reviewed products they did not purchase from us.	f	database	complete	f
+9	2024-01-24 01:40:32.259742+00	2024-01-24 01:40:33.208973+00	upsertion_record	\N	entity/GenericTable	t	2	Upsertion Record	\N	main	\N	\N	f	database	complete	f
+10	2024-01-24 01:40:32.310181+00	2024-01-24 01:40:33.212513+00	message_store	\N	entity/GenericTable	t	2	Message Store	\N	main	\N	\N	f	database	complete	f
+11	2024-01-24 01:40:32.331243+00	2024-01-24 01:40:33.215618+00	logs	\N	entity/EventTable	t	2	Logs	\N	main	\N	\N	f	database	complete	f
+12	2024-01-24 01:40:32.381444+00	2024-01-24 01:40:33.218778+00	external_id	\N	entity/GenericTable	t	2	External ID	\N	main	\N	\N	f	database	complete	f
+13	2024-01-24 01:40:32.401884+00	2024-01-24 01:40:33.221833+00	langchain_pg_collection	\N	entity/GenericTable	t	2	Langchain Pg Collection	\N	main	\N	\N	f	database	complete	f
+14	2024-01-24 01:40:32.419089+00	2024-01-24 01:40:33.225038+00	profile	\N	entity/GenericTable	t	2	Profile	\N	main	\N	\N	f	database	complete	f
+15	2024-01-24 01:40:32.434165+00	2024-01-24 01:40:33.228052+00	feature_flag	\N	entity/GenericTable	t	2	Feature Flag	\N	main	\N	\N	f	database	complete	f
+16	2024-01-24 01:40:32.452207+00	2024-01-24 01:40:33.230498+00	group	\N	entity/GenericTable	t	2	Group	\N	main	\N	\N	f	database	complete	f
+17	2024-01-24 01:40:32.461756+00	2024-01-24 01:40:33.233754+00	integration	\N	entity/GenericTable	t	2	Integration	\N	main	\N	\N	f	database	complete	f
+18	2024-01-24 01:40:32.47059+00	2024-01-24 01:40:33.23663+00	langchain_pg_embedding	\N	entity/GenericTable	t	2	Langchain Pg Embedding	\N	main	\N	\N	f	database	complete	f
 \.
 
 
@@ -3891,6 +3952,9 @@ COPY public.permissions (id, object, group_id) FROM stdin;
 7	/db/1/	1
 8	/download/db/1/	1
 9	/download/db/1/native/	1
+12	/db/2/	1
+13	/download/db/2/	1
+14	/download/db/2/native/	1
 \.
 
 
@@ -3983,15 +4047,17 @@ COPY public.qrtz_calendars (sched_name, calendar_name, calendar) FROM stdin;
 --
 
 COPY public.qrtz_cron_triggers (sched_name, trigger_name, trigger_group, cron_expression, time_zone_id) FROM stdin;
-MetabaseScheduler	metabase.task.sync-and-analyze.trigger.1	DEFAULT	0 10 * * * ? *	GMT
 MetabaseScheduler	metabase.task.update-field-values.trigger.1	DEFAULT	0 0 5 * * ? *	GMT
 MetabaseScheduler	metabase.task.upgrade-checks.trigger	DEFAULT	0 15 6,18 * * ? *	GMT
-MetabaseScheduler	metabase.task.anonymous-stats.trigger	DEFAULT	0 42 13 * * ? *	GMT
-MetabaseScheduler	metabase.task.refresh-channel-cache.trigger	DEFAULT	0 4 0/4 1/1 * ? *	GMT
+MetabaseScheduler	metabase.task.anonymous-stats.trigger	DEFAULT	0 51 2 * * ? *	GMT
+MetabaseScheduler	metabase.task.refresh-channel-cache.trigger	DEFAULT	0 11 0/4 1/1 * ? *	GMT
 MetabaseScheduler	metabase.task.truncate-audit-tables.trigger	DEFAULT	0 0 */12 * * ? *	GMT
 MetabaseScheduler	metabase.task.send-pulses.trigger	DEFAULT	0 0 * * * ? *	GMT
 MetabaseScheduler	metabase.task.follow-up-emails.trigger	DEFAULT	0 0 12 * * ? *	GMT
 MetabaseScheduler	metabase.task.task-history-cleanup.trigger	DEFAULT	0 0 0 * * ? *	GMT
+MetabaseScheduler	metabase.task.sync-and-analyze.trigger.1	DEFAULT	0 10 * * * ? *	GMT
+MetabaseScheduler	metabase.task.sync-and-analyze.trigger.2	DEFAULT	0 14 * * * ? *	GMT
+MetabaseScheduler	metabase.task.update-field-values.trigger.2	DEFAULT	0 0 21 * * ? *	GMT
 \.
 
 
@@ -4047,7 +4113,7 @@ COPY public.qrtz_paused_trigger_grps (sched_name, trigger_group) FROM stdin;
 --
 
 COPY public.qrtz_scheduler_state (sched_name, instance_name, last_checkin_time, checkin_interval) FROM stdin;
-MetabaseScheduler	2cd8104457561706058426923	1706058532191	7500
+MetabaseScheduler	a01bb4e287801706060324065	1706060616961	7500
 \.
 
 
@@ -4072,15 +4138,17 @@ COPY public.qrtz_simprop_triggers (sched_name, trigger_name, trigger_group, str_
 --
 
 COPY public.qrtz_triggers (sched_name, trigger_name, trigger_group, job_name, job_group, description, next_fire_time, prev_fire_time, priority, trigger_state, trigger_type, start_time, end_time, calendar_name, misfire_instr, job_data) FROM stdin;
-MetabaseScheduler	metabase.task.sync-and-analyze.trigger.1	DEFAULT	metabase.task.sync-and-analyze.job	DEFAULT	sync-and-analyze Database 1	1706058600000	-1	5	WAITING	CRON	1706058106000	0	\N	2	\\xaced0005737200156f72672e71756172747a2e4a6f62446174614d61709fb083e8bfa9b0cb020000787200266f72672e71756172747a2e7574696c732e537472696e674b65794469727479466c61674d61708208e8c3fbc55d280200015a0013616c6c6f77735472616e7369656e74446174617872001d6f72672e71756172747a2e7574696c732e4469727479466c61674d617013e62ead28760ace0200025a000564697274794c00036d617074000f4c6a6176612f7574696c2f4d61703b787000737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c7708000000100000000174000564622d6964737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b0200007870000000017800
 MetabaseScheduler	metabase.task.update-field-values.trigger.1	DEFAULT	metabase.task.update-field-values.job	DEFAULT	update-field-values Database 1	1706072400000	-1	5	WAITING	CRON	1706058106000	0	\N	2	\\xaced0005737200156f72672e71756172747a2e4a6f62446174614d61709fb083e8bfa9b0cb020000787200266f72672e71756172747a2e7574696c732e537472696e674b65794469727479466c61674d61708208e8c3fbc55d280200015a0013616c6c6f77735472616e7369656e74446174617872001d6f72672e71756172747a2e7574696c732e4469727479466c61674d617013e62ead28760ace0200025a000564697274794c00036d617074000f4c6a6176612f7574696c2f4d61703b787000737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c7708000000100000000174000564622d6964737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b0200007870000000017800
-MetabaseScheduler	metabase.task.upgrade-checks.trigger	DEFAULT	metabase.task.upgrade-checks.job	DEFAULT	\N	1706076900000	-1	5	WAITING	CRON	1706058427000	0	\N	0	\\x
-MetabaseScheduler	metabase.task.anonymous-stats.trigger	DEFAULT	metabase.task.anonymous-stats.job	DEFAULT	\N	1706103720000	-1	5	WAITING	CRON	1706058427000	0	\N	0	\\x
-MetabaseScheduler	metabase.task.refresh-channel-cache.trigger	DEFAULT	metabase.task.refresh-channel-cache.job	DEFAULT	\N	1706069040000	-1	5	WAITING	CRON	1706058427000	0	\N	2	\\x
-MetabaseScheduler	metabase.task.truncate-audit-tables.trigger	DEFAULT	metabase.task.truncate-audit-tables.job	DEFAULT	\N	1706097600000	-1	5	WAITING	CRON	1706058427000	0	\N	2	\\x
-MetabaseScheduler	metabase.task.send-pulses.trigger	DEFAULT	metabase.task.send-pulses.job	DEFAULT	\N	1706061600000	-1	5	WAITING	CRON	1706058427000	0	\N	1	\\x
-MetabaseScheduler	metabase.task.follow-up-emails.trigger	DEFAULT	metabase.task.follow-up-emails.job	DEFAULT	\N	1706097600000	-1	5	WAITING	CRON	1706058427000	0	\N	0	\\x
-MetabaseScheduler	metabase.task.task-history-cleanup.trigger	DEFAULT	metabase.task.task-history-cleanup.job	DEFAULT	\N	1706140800000	-1	5	WAITING	CRON	1706058427000	0	\N	0	\\x
+MetabaseScheduler	metabase.task.upgrade-checks.trigger	DEFAULT	metabase.task.upgrade-checks.job	DEFAULT	\N	1706076900000	-1	5	WAITING	CRON	1706060324000	0	\N	0	\\x
+MetabaseScheduler	metabase.task.anonymous-stats.trigger	DEFAULT	metabase.task.anonymous-stats.job	DEFAULT	\N	1706064660000	-1	5	WAITING	CRON	1706060324000	0	\N	0	\\x
+MetabaseScheduler	metabase.task.refresh-channel-cache.trigger	DEFAULT	metabase.task.refresh-channel-cache.job	DEFAULT	\N	1706069460000	-1	5	WAITING	CRON	1706060324000	0	\N	2	\\x
+MetabaseScheduler	metabase.task.truncate-audit-tables.trigger	DEFAULT	metabase.task.truncate-audit-tables.job	DEFAULT	\N	1706097600000	-1	5	WAITING	CRON	1706060324000	0	\N	2	\\x
+MetabaseScheduler	metabase.task.send-pulses.trigger	DEFAULT	metabase.task.send-pulses.job	DEFAULT	\N	1706061600000	-1	5	WAITING	CRON	1706060324000	0	\N	1	\\x
+MetabaseScheduler	metabase.task.follow-up-emails.trigger	DEFAULT	metabase.task.follow-up-emails.job	DEFAULT	\N	1706097600000	-1	5	WAITING	CRON	1706060324000	0	\N	0	\\x
+MetabaseScheduler	metabase.task.task-history-cleanup.trigger	DEFAULT	metabase.task.task-history-cleanup.job	DEFAULT	\N	1706140800000	-1	5	WAITING	CRON	1706060324000	0	\N	0	\\x
+MetabaseScheduler	metabase.task.sync-and-analyze.trigger.1	DEFAULT	metabase.task.sync-and-analyze.job	DEFAULT	sync-and-analyze Database 1	1706062200000	-1	5	WAITING	CRON	1706058106000	0	\N	2	\\xaced0005737200156f72672e71756172747a2e4a6f62446174614d61709fb083e8bfa9b0cb020000787200266f72672e71756172747a2e7574696c732e537472696e674b65794469727479466c61674d61708208e8c3fbc55d280200015a0013616c6c6f77735472616e7369656e74446174617872001d6f72672e71756172747a2e7574696c732e4469727479466c61674d617013e62ead28760ace0200025a000564697274794c00036d617074000f4c6a6176612f7574696c2f4d61703b787000737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c7708000000100000000174000564622d6964737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b0200007870000000017800
+MetabaseScheduler	metabase.task.sync-and-analyze.trigger.2	DEFAULT	metabase.task.sync-and-analyze.job	DEFAULT	sync-and-analyze Database 2	1706062440000	-1	5	WAITING	CRON	1706060432000	0	\N	2	\\xaced0005737200156f72672e71756172747a2e4a6f62446174614d61709fb083e8bfa9b0cb020000787200266f72672e71756172747a2e7574696c732e537472696e674b65794469727479466c61674d61708208e8c3fbc55d280200015a0013616c6c6f77735472616e7369656e74446174617872001d6f72672e71756172747a2e7574696c732e4469727479466c61674d617013e62ead28760ace0200025a000564697274794c00036d617074000f4c6a6176612f7574696c2f4d61703b787000737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c7708000000100000000174000564622d6964737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b0200007870000000027800
+MetabaseScheduler	metabase.task.update-field-values.trigger.2	DEFAULT	metabase.task.update-field-values.job	DEFAULT	update-field-values Database 2	1706130000000	-1	5	WAITING	CRON	1706060432000	0	\N	2	\\xaced0005737200156f72672e71756172747a2e4a6f62446174614d61709fb083e8bfa9b0cb020000787200266f72672e71756172747a2e7574696c732e537472696e674b65794469727479466c61674d61708208e8c3fbc55d280200015a0013616c6c6f77735472616e7369656e74446174617872001d6f72672e71756172747a2e7574696c732e4469727479466c61674d617013e62ead28760ace0200025a000564697274794c00036d617074000f4c6a6176612f7574696c2f4d61703b787000737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c7708000000100000000174000564622d6964737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b0200007870000000027800
 \.
 
 
@@ -4089,6 +4157,17 @@ MetabaseScheduler	metabase.task.task-history-cleanup.trigger	DEFAULT	metabase.ta
 --
 
 COPY public.query (query_hash, average_execution_time, query) FROM stdin;
+\\xa485e7639c3f07dcdec9b8abf9316f327f156598de605d88422f6454b692f00a	647	{"database":1,"type":"query","query":{"aggregation":[["count"]],"breakout":[["field",58,{"source-field":40}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xf1b56beaa17e20584d1ad975bf448849ee0a00e6d45aeb413462024a4fa68f46	376	{"database":1,"type":"query","query":{"aggregation":[["count"]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\x262bc7d85f3ea914e5040139969c401d5f1307467f7adf158ba9275d60c1edc7	603	{"database":1,"type":"query","query":{"aggregation":[["avg",["field",39,null]]],"breakout":[["field",41,{"temporal-unit":"month"}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xf6cf7ec79bec05d2daec2a6f4549735c1833504bedc3958ba6945e0988295432	561	{"database":1,"type":"query","query":{"aggregation":[["count"]],"filter":["time-interval",["field",41,{"temporal-unit":"month"}],-30,"day"],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\x2764e9a706785d331958b3db92e9555de5cd0a03c5cc90b4a080e67db51bc4a7	666	{"database":1,"type":"query","query":{"aggregation":[["count"]],"breakout":[["field",65,{"source-field":40}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\x0ceca86069014b63393306e7af7a07ea7cf8d227e514df9c64e0d9bc8b8bec2d	646	{"database":1,"type":"query","query":{"aggregation":[["count"]],"breakout":[["field",48,{"source-field":43}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xe29abe5418e44f752439f3922508726213f5943ddf725ae2138dfca0d8473bfc	738	{"database":1,"type":"query","query":{"aggregation":[["count"]],"breakout":[["field",41,{"temporal-unit":"month"}],["field",45,{"source-field":43}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\x13530d4938344c46ead87f7bb7fd6c8d6f1170497ba07c2ae5ed4597a172e1df	720	{"database":1,"type":"query","query":{"aggregation":[["count"]],"breakout":[["field",50,{"source-field":43,"binning":{"strategy":"default"}}],["field",57,{"source-field":43,"binning":{"strategy":"default"}}]],"source-table":2},"parameters":[{"type":"date/all-options","value":null,"id":"275026523","target":["dimension",["field",41,null]]},{"type":"category","value":null,"id":"-2124989782","target":["dimension",["field",45,{"source-field":43}]]},{"type":"location/state","value":null,"id":"1735009568","target":["dimension",["field",48,{"source-field":43}]]},{"type":"category","value":null,"id":"241800831","target":["dimension",["field",58,{"source-field":40}]]}],"middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xd9ad998aaf8ad7a97c6cf97dbc6d17208277f6873a6a9ce66150ee04a21000c3	12	{"database":2,"query":{"source-table":15},"type":"query","middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xf6513c3df790b2c2169e13ed2a025a741f44500871e8c65f8af31740fed62fb4	14	{"database":2,"query":{"source-table":12},"type":"query","middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
+\\xffe6c808e143115c0d249512c5c3b79315e7529e3c0b524c21b6125514328b99	15	{"database":2,"query":{"source-table":14},"type":"query","middleware":{"js-int-to-string?":true,"add-default-userland-constraints?":true}}
 \.
 
 
@@ -4113,6 +4192,27 @@ COPY public.query_cache (query_hash, updated_at, results) FROM stdin;
 --
 
 COPY public.query_execution (id, hash, started_at, running_time, result_rows, native, context, error, executor_id, card_id, dashboard_id, pulse_id, database_id, cache_hit, action_id, is_sandboxed, cache_hash) FROM stdin;
+1	\\xf1b56beaa17e20584d1ad975bf448849ee0a00e6d45aeb413462024a4fa68f46	2024-01-24 01:40:35.424438+00	377	1	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+2	\\xf1b56beaa17e20584d1ad975bf448849ee0a00e6d45aeb413462024a4fa68f46	2024-01-24 01:40:35.424438+00	409	0	f	ad-hoc	Broken pipe	1	\N	\N	\N	1	\N	\N	\N	\N
+3	\\xf1b56beaa17e20584d1ad975bf448849ee0a00e6d45aeb413462024a4fa68f46	2024-01-24 01:40:35.468733+00	336	1	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+4	\\xf6cf7ec79bec05d2daec2a6f4549735c1833504bedc3958ba6945e0988295432	2024-01-24 01:40:35.45627+00	549	1	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+5	\\xf6cf7ec79bec05d2daec2a6f4549735c1833504bedc3958ba6945e0988295432	2024-01-24 01:40:35.427056+00	590	1	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+6	\\xf6cf7ec79bec05d2daec2a6f4549735c1833504bedc3958ba6945e0988295432	2024-01-24 01:40:35.427056+00	633	0	f	ad-hoc	Broken pipe	1	\N	\N	\N	1	\N	\N	\N	\N
+7	\\x262bc7d85f3ea914e5040139969c401d5f1307467f7adf158ba9275d60c1edc7	2024-01-24 01:40:35.424532+00	596	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+8	\\xa485e7639c3f07dcdec9b8abf9316f327f156598de605d88422f6454b692f00a	2024-01-24 01:40:35.444844+00	644	4	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+9	\\x2764e9a706785d331958b3db92e9555de5cd0a03c5cc90b4a080e67db51bc4a7	2024-01-24 01:40:35.42443+00	666	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+10	\\x262bc7d85f3ea914e5040139969c401d5f1307467f7adf158ba9275d60c1edc7	2024-01-24 01:40:35.445684+00	668	49	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+11	\\xa485e7639c3f07dcdec9b8abf9316f327f156598de605d88422f6454b692f00a	2024-01-24 01:40:35.42643+00	675	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+12	\\x2764e9a706785d331958b3db92e9555de5cd0a03c5cc90b4a080e67db51bc4a7	2024-01-24 01:40:35.454804+00	667	199	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+13	\\xe29abe5418e44f752439f3922508726213f5943ddf725ae2138dfca0d8473bfc	2024-01-24 01:40:35.425269+00	733	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+14	\\x0ceca86069014b63393306e7af7a07ea7cf8d227e514df9c64e0d9bc8b8bec2d	2024-01-24 01:40:35.473065+00	694	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+15	\\x0ceca86069014b63393306e7af7a07ea7cf8d227e514df9c64e0d9bc8b8bec2d	2024-01-24 01:40:36.007354+00	215	48	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+16	\\xe29abe5418e44f752439f3922508726213f5943ddf725ae2138dfca0d8473bfc	2024-01-24 01:40:35.471332+00	782	241	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+17	\\x13530d4938344c46ead87f7bb7fd6c8d6f1170497ba07c2ae5ed4597a172e1df	2024-01-24 01:40:35.445281+00	785	0	f	ad-hoc	Error reducing result rows: null	1	\N	\N	\N	1	\N	\N	\N	\N
+18	\\x13530d4938344c46ead87f7bb7fd6c8d6f1170497ba07c2ae5ed4597a172e1df	2024-01-24 01:40:36.160055+00	139	23	f	ad-hoc	\N	1	\N	\N	\N	1	f	\N	f	\N
+19	\\xd9ad998aaf8ad7a97c6cf97dbc6d17208277f6873a6a9ce66150ee04a21000c3	2024-01-24 01:41:11.377892+00	12	0	f	ad-hoc	java.sql.SQLException: Extension Autoloading Error: An error occurred while trying to automatically install the required extension 'postgres_scanner':\nCan't find the home directory at '/home/metabase'\nSpecify a home directory using the SET home_directory='/path/to/dir' option.	1	\N	\N	\N	2	\N	\N	\N	\N
+20	\\xf6513c3df790b2c2169e13ed2a025a741f44500871e8c65f8af31740fed62fb4	2024-01-24 01:41:15.599827+00	14	0	f	ad-hoc	java.sql.SQLException: Extension Autoloading Error: An error occurred while trying to automatically install the required extension 'postgres_scanner':\nCan't find the home directory at '/home/metabase'\nSpecify a home directory using the SET home_directory='/path/to/dir' option.	1	\N	\N	\N	2	\N	\N	\N	\N
+21	\\xffe6c808e143115c0d249512c5c3b79315e7529e3c0b524c21b6125514328b99	2024-01-24 01:41:19.864488+00	15	0	f	ad-hoc	java.sql.SQLException: Extension Autoloading Error: An error occurred while trying to automatically install the required extension 'postgres_scanner':\nCan't find the home directory at '/home/metabase'\nSpecify a home directory using the SET home_directory='/path/to/dir' option.	1	\N	\N	\N	2	\N	\N	\N	\N
 \.
 
 
@@ -4121,6 +4221,25 @@ COPY public.query_execution (id, hash, started_at, running_time, result_rows, na
 --
 
 COPY public.recent_views (id, user_id, model, model_id, "timestamp") FROM stdin;
+1	1	table	2	2024-01-24 01:40:35.375387
+2	1	table	2	2024-01-24 01:40:35.382278
+3	1	table	2	2024-01-24 01:40:35.383802
+4	1	table	2	2024-01-24 01:40:35.389172
+5	1	table	2	2024-01-24 01:40:35.40074
+6	1	table	2	2024-01-24 01:40:35.399391
+7	1	table	2	2024-01-24 01:40:35.41143
+8	1	table	2	2024-01-24 01:40:35.414049
+9	1	table	2	2024-01-24 01:40:35.418307
+10	1	table	2	2024-01-24 01:40:35.442619
+11	1	table	2	2024-01-24 01:40:35.442672
+12	1	table	2	2024-01-24 01:40:35.44836
+13	1	table	2	2024-01-24 01:40:35.451459
+14	1	table	2	2024-01-24 01:40:35.459634
+15	1	table	2	2024-01-24 01:40:35.981364
+16	1	table	2	2024-01-24 01:40:36.13865
+17	1	table	15	2024-01-24 01:41:11.374302
+18	1	table	12	2024-01-24 01:41:15.596327
+19	1	table	14	2024-01-24 01:41:19.860111
 \.
 
 
@@ -4198,13 +4317,14 @@ redirect-all-requests-to-https	false
 site-url	http://localhost:3000
 analytics-uuid	5165b1c8-233e-400b-9a7d-abdf2366c672
 instance-creation	2024-01-24T01:01:47.113476Z
-startup-time-millis	1049
 site-name	QuackMeUp
 admin-email	quackmeup@example.com
 site-locale	en
 anon-tracking-enabled	false
 site-uuid	1062b55c-2976-479e-a18a-4a3421b52180
-settings-last-updated	2024-01-24 01:08:50.949266+00
+startup-time-millis	1806
+show-database-syncing-modal	false
+settings-last-updated	2024-01-24 01:40:32.337772+00
 \.
 
 
@@ -4236,6 +4356,21 @@ COPY public.task_history (id, task, db_id, started_at, ended_at, duration, task_
 13	field values scanning	1	2024-01-24 01:01:41.223414+00	2024-01-24 01:01:46.696752+00	5473	\N
 14	delete-expired-advanced-field-values	1	2024-01-24 01:01:41.223425+00	2024-01-24 01:01:41.390543+00	167	{"deleted":0}
 15	update-field-values	1	2024-01-24 01:01:41.390587+00	2024-01-24 01:01:46.696726+00	5306	{"errors":0,"created":24,"updated":0,"deleted":1}
+16	sync	2	2024-01-24 01:40:32.211375+00	2024-01-24 01:40:32.791666+00	580	\N
+17	sync-dbms-version	2	2024-01-24 01:40:32.211707+00	2024-01-24 01:40:32.223701+00	11	{"flavor":"DuckDB","version":"v0.9.1","semantic-version":[1,0]}
+18	sync-timezone	2	2024-01-24 01:40:32.224444+00	2024-01-24 01:40:32.225658+00	1	{"timezone-id":null}
+19	sync-tables	2	2024-01-24 01:40:32.225706+00	2024-01-24 01:40:32.530163+00	304	{"updated-tables":10,"total-tables":0}
+20	sync-fields	2	2024-01-24 01:40:32.530248+00	2024-01-24 01:40:32.754436+00	224	{"total-fields":49,"updated-fields":48}
+21	sync-fks	2	2024-01-24 01:40:32.754466+00	2024-01-24 01:40:32.790569+00	36	{"total-fks":0,"updated-fks":0,"total-failed":0}
+22	sync-metabase-metadata	2	2024-01-24 01:40:32.790608+00	2024-01-24 01:40:32.79137+00	0	\N
+23	sync-table-privileges	2	2024-01-24 01:40:32.791389+00	2024-01-24 01:40:32.791657+00	0	\N
+24	analyze	2	2024-01-24 01:40:32.821319+00	2024-01-24 01:40:33.238133+00	416	\N
+25	fingerprint-fields	2	2024-01-24 01:40:32.821331+00	2024-01-24 01:40:33.19078+00	369	{"no-data-fingerprints":0,"failed-fingerprints":0,"updated-fingerprints":0,"fingerprints-attempted":0}
+26	classify-fields	2	2024-01-24 01:40:33.190832+00	2024-01-24 01:40:33.204613+00	13	{"fields-classified":0,"fields-failed":0}
+27	classify-tables	2	2024-01-24 01:40:33.204646+00	2024-01-24 01:40:33.238111+00	33	{"total-tables":10,"tables-classified":10}
+28	field values scanning	2	2024-01-24 01:40:33.254117+00	2024-01-24 01:40:33.453415+00	199	\N
+29	delete-expired-advanced-field-values	2	2024-01-24 01:40:33.25413+00	2024-01-24 01:40:33.390837+00	136	{"deleted":0}
+30	update-field-values	2	2024-01-24 01:40:33.390878+00	2024-01-24 01:40:33.453385+00	62	{"errors":0,"created":0,"updated":0,"deleted":0}
 \.
 
 
@@ -4260,6 +4395,25 @@ COPY public.timeline_event (id, timeline_id, name, description, "timestamp", tim
 --
 
 COPY public.view_log (id, user_id, model, model_id, "timestamp", metadata, has_access, context) FROM stdin;
+1	1	table	2	2024-01-24 01:40:35.356605+00	\N	t	\N
+14	1	table	2	2024-01-24 01:40:35.4555+00	\N	t	\N
+2	1	table	2	2024-01-24 01:40:35.355809+00	\N	t	\N
+10	1	table	2	2024-01-24 01:40:35.418077+00	\N	t	\N
+16	1	table	2	2024-01-24 01:40:36.122021+00	\N	t	\N
+18	1	table	12	2024-01-24 01:41:15.594498+00	\N	t	\N
+19	1	table	14	2024-01-24 01:41:19.857184+00	\N	t	\N
+3	1	table	2	2024-01-24 01:40:35.370202+00	\N	t	\N
+4	1	table	2	2024-01-24 01:40:35.373898+00	\N	t	\N
+5	1	table	2	2024-01-24 01:40:35.382652+00	\N	t	\N
+6	1	table	2	2024-01-24 01:40:35.390275+00	\N	t	\N
+7	1	table	2	2024-01-24 01:40:35.398658+00	\N	t	\N
+8	1	table	2	2024-01-24 01:40:35.401907+00	\N	t	\N
+9	1	table	2	2024-01-24 01:40:35.401859+00	\N	t	\N
+11	1	table	2	2024-01-24 01:40:35.425342+00	\N	t	\N
+12	1	table	2	2024-01-24 01:40:35.432006+00	\N	t	\N
+13	1	table	2	2024-01-24 01:40:35.443036+00	\N	t	\N
+15	1	table	2	2024-01-24 01:40:35.953645+00	\N	t	\N
+17	1	table	15	2024-01-24 01:41:11.372209+00	\N	t	\N
 \.
 
 
@@ -4407,21 +4561,21 @@ SELECT pg_catalog.setval('public.label_id_seq', 1, false);
 -- Name: login_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.login_history_id_seq', 1, false);
+SELECT pg_catalog.setval('public.login_history_id_seq', 1, true);
 
 
 --
 -- Name: metabase_database_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metabase_database_id_seq', 1, true);
+SELECT pg_catalog.setval('public.metabase_database_id_seq', 2, true);
 
 
 --
 -- Name: metabase_field_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metabase_field_id_seq', 71, true);
+SELECT pg_catalog.setval('public.metabase_field_id_seq', 120, true);
 
 
 --
@@ -4435,7 +4589,7 @@ SELECT pg_catalog.setval('public.metabase_fieldvalues_id_seq', 24, true);
 -- Name: metabase_table_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metabase_table_id_seq', 8, true);
+SELECT pg_catalog.setval('public.metabase_table_id_seq', 18, true);
 
 
 --
@@ -4498,7 +4652,7 @@ SELECT pg_catalog.setval('public.permissions_group_membership_id_seq', 2, true);
 -- Name: permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.permissions_id_seq', 9, true);
+SELECT pg_catalog.setval('public.permissions_id_seq', 14, true);
 
 
 --
@@ -4547,14 +4701,14 @@ SELECT pg_catalog.setval('public.pulse_id_seq', 1, false);
 -- Name: query_execution_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.query_execution_id_seq', 1, false);
+SELECT pg_catalog.setval('public.query_execution_id_seq', 21, true);
 
 
 --
 -- Name: recent_views_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.recent_views_id_seq', 1, false);
+SELECT pg_catalog.setval('public.recent_views_id_seq', 19, true);
 
 
 --
@@ -4610,7 +4764,7 @@ SELECT pg_catalog.setval('public.segment_id_seq', 1, false);
 -- Name: task_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.task_history_id_seq', 15, true);
+SELECT pg_catalog.setval('public.task_history_id_seq', 30, true);
 
 
 --
@@ -4631,7 +4785,7 @@ SELECT pg_catalog.setval('public.timeline_id_seq', 1, false);
 -- Name: view_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.view_log_id_seq', 1, false);
+SELECT pg_catalog.setval('public.view_log_id_seq', 19, true);
 
 
 --
