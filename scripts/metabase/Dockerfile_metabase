@@ -34,7 +34,7 @@ RUN chown -R metabase /home/plugins
 RUN mkdir /home/metabase
 RUN chown -R metabase /home/metabase
 
-# USER metabase # TODO: restore after all debugging complete
+USER metabase
 
 # expose our default runtime port
 EXPOSE 3000
