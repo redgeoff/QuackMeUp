@@ -40,13 +40,11 @@ Install the awscli and run `aws configure`
 
 [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
 
-`cd terraform`
+`./terraform/init.sh`
 
-`terraform init`
+`./terraform/plan.sh`
 
-`terraform plan`
-
-`terraform apply`
+`./terraform/apply.sh`
 
 TODO: configure CloudWatch to S3 exporter
 
@@ -89,7 +87,7 @@ Then repeat the installation
 
 ## Destroying infrastructure
 
-`terraform destroy`
+`./terraform/destroy.sh`
 
 ## Running tests
 
