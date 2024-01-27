@@ -82,3 +82,14 @@ jobs:
 
       - name: Run tests
         run: make test
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: "1.7.1"
+
+      - name: Terraform Validate
+        run: |
+          cd terraform
+          ./init.sh
+          ./validate.sh

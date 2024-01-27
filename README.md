@@ -85,6 +85,10 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
 
 Then repeat the installation
 
+## Validating terraform config
+
+`./terraform/validate.sh`
+
 ## Destroying infrastructure
 
 `./terraform/destroy.sh`
