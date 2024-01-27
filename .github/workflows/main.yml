@@ -74,6 +74,9 @@ jobs:
       #   # if: ${{ github.event_name == 'workflow_dispatch' }}
       #   # if: ${{ inputs.debug_enabled }}
 
+      - name: Set up env
+        run: cp .env.example .env
+
       - name: Lint
         run: make lint
 
