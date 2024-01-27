@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "my_bucket" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "Log_Exporter_Function_Role"
+  name = "log_exporter_function_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -66,7 +66,7 @@ data "archive_file" "zip_the_python_code" {
 
 resource "aws_lambda_function" "terraform_lambda_func" {
   filename    = "${path.module}/../ignored/log-exporter.zip"
-  function_name = "Log_Exporter_Function"
+  function_name = "log_exporter_function"
   role        = aws_iam_role.lambda_role.arn
   handler     = "lambda_handler.lambda_handler"
   runtime     = "python3.8"
