@@ -74,6 +74,9 @@ jobs:
       #   # if: ${{ github.event_name == 'workflow_dispatch' }}
       #   # if: ${{ inputs.debug_enabled }}
 
+      - name: Set up env
+        run: cp .env.example .env
+
       - name: Lint
         run: make lint
 
@@ -82,3 +85,14 @@ jobs:
 
       - name: Run tests
         run: make test
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.1"
+
+      - name: Terraform Validate
+        run: |
+          cd terraform
+          ./init.sh
+          ./validate.sh

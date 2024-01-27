@@ -26,8 +26,6 @@ Install the awscli and run `aws configure`
 
 `cp .env.example .env` and then edit `.env`
 
-TODO: configure CloudWatch to S3 exporter
-
 `brew install python@3.11`
 
 `python3.11 -m pip install poetry`
@@ -37,6 +35,18 @@ TODO: configure CloudWatch to S3 exporter
 `poetry run pre-commit install`
 
 `brew install duckdb` # TODO: install via docker-compose?
+
+## Deploy infrastructure
+
+[Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
+
+`./terraform/init.sh`
+
+`./terraform/plan.sh`
+
+`./terraform/apply.sh`
+
+TODO: configure CloudWatch to S3 exporter
 
 ### Install QuackMeUp
 
@@ -74,6 +84,14 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
 `./scripts/duckdb/drop_db.sh`
 
 Then repeat the installation
+
+## Validating terraform config
+
+`./terraform/validate.sh`
+
+## Destroying infrastructure
+
+`./terraform/destroy.sh`
 
 ## Running tests
 
