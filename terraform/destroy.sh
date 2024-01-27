@@ -3,6 +3,6 @@
 set -a
 cd $(dirname $0)
 
-./transform_env.sh
+source ./transform_env.sh
 
 terraform destroy
