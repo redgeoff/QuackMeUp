@@ -58,17 +58,27 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
   policy_arn = aws_iam_policy.iam_policy_for_lambda.arn
 }
 
-data "archive_file" "zip_the_python_code" {
-  type        = "zip"
-  source_dir  = "${path.module}/../src/log_exporter"
-  output_path = "${path.module}/../ignored/log-exporter.zip"
+resource "null_resource" "build_and_package_lambda" {
+  provisioner "local-exec" {
+    command = <<EOF
+      cd ..
+      docker build -t lambda-builder .
+      docker run --name lambda-builder-container lambda-builder
+      docker cp lambda-builder-container:/var/task ./ignored/lambda_package
+      docker rm lambda-builder-container
+      cd ./ignored/lambda_package && zip -r ../lambda_package.zip .
+    EOF
+  }
+  triggers = {
+    build_trigger = "${timestamp()}"
+  }
 }
 
 resource "aws_lambda_function" "terraform_lambda_func" {
-  filename    = "${path.module}/../ignored/log-exporter.zip"
+  filename    = "lambda_package.zip"
   function_name = "log_exporter_function"
   role        = aws_iam_role.lambda_role.arn
   handler     = "lambda_handler.lambda_handler"
-  runtime     = "python3.8"
-  depends_on  = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  runtime     = "python3.11"
+  depends_on  = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role, resource.null_resource.build_and_package_lambda]
 }
