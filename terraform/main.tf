@@ -8,7 +8,7 @@ variable "LOGS_BUCKET_NAME" {
   default     = "default-logs-bucket-name"
 }
 
-resource "aws_s3_bucket" "my_bucket" {
+resource "aws_s3_bucket" "quackmeup_bucket" {
   bucket = var.LOGS_BUCKET_NAME
 }
 
@@ -16,7 +16,7 @@ resource "aws_ecr_repository" "quackmeup_repository" {
   name = "quackmeup"
 }
 
-resource "aws_ecr_lifecycle_policy" "my_lifecycle_policy" {
+resource "aws_ecr_lifecycle_policy" "quackmeup_lifecycle_policy" {
   repository = aws_ecr_repository.quackmeup_repository.name
 
   policy = <<EOF
