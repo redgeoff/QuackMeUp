@@ -4,4 +4,4 @@ cd $(dirname $0)
 
 source ./transform_env.sh
 
-terraform validate
+terraform init -upgrade
