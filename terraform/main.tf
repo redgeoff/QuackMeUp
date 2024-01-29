@@ -51,22 +51,25 @@ EOF
 
 data "aws_caller_identity" "current" {}
 
-resource "null_resource" "docker_image" {
-  triggers = {
-    dockerfile_hash = filemd5("../Dockerfile")
-  }
-
-  provisioner "local-exec" {
-    command = "docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url}:latest .."
-  }
-}
-
 resource "docker_image" "quackmeup_image" {
   name = "${aws_ecr_repository.quackmeup_repository.repository_url}:latest"
   build {
-    context = pathexpand("..")
+    context    = pathexpand("..")
+    dockerfile = "../Dockerfile"
   }
-  depends_on = [null_resource.docker_image]
+}
+
+resource "null_resource" "push_image" {
+  provisioner "local-exec" {
+    command = <<EOF
+    docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url} ..
+    echo $(aws ecr get-login-password --region us-east-1) | docker login --username AWS --password-stdin ${aws_ecr_repository.quackmeup_repository.repository_url}
+    docker push ${aws_ecr_repository.quackmeup_repository.repository_url}
+    EOF
+  }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 }
 
 data "aws_iam_policy_document" "ecr_policy" {
