@@ -12,6 +12,35 @@ resource "aws_s3_bucket" "my_bucket" {
   bucket = var.LOGS_BUCKET_NAME
 }
 
+resource "aws_ecr_repository" "quackmeup_repository" {
+  name = "quackmeup"
+}
+
+resource "aws_ecr_lifecycle_policy" "my_lifecycle_policy" {
+  repository = aws_ecr_repository.quackmeup_repository.name
+
+  policy = <<EOF
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Expire images older than 7 days",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 7
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+EOF
+}
+
+/*
 resource "aws_iam_role" "lambda_role" {
   name = "log_exporter_function_role"
   assume_role_policy = <<EOF
@@ -82,3 +111,4 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   runtime     = "python3.11"
   depends_on  = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role, resource.null_resource.build_and_package_lambda]
 }
+*/
