@@ -1,5 +1,14 @@
+variable "aws_region" {
+  description = "The region where AWS operations will take place"
+  default     = "us-east-1"
+}
+
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
+}
+
+locals {
+  aws_region = var.aws_region
 }
 
 terraform {
@@ -63,7 +72,7 @@ resource "null_resource" "push_image" {
   provisioner "local-exec" {
     command = <<EOF
     docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url} ..
-    echo $(aws ecr get-login-password --region us-east-1) | docker login --username AWS --password-stdin ${aws_ecr_repository.quackmeup_repository.repository_url}
+    echo $(aws ecr get-login-password --region ${local.aws_region}) | docker login --username AWS --password-stdin ${aws_ecr_repository.quackmeup_repository.repository_url}
     docker push ${aws_ecr_repository.quackmeup_repository.repository_url}
     EOF
   }
