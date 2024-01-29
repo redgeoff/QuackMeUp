@@ -12,3 +12,6 @@ ci:
 
 format_logs:
 	poetry run python -m src.format_logs
+
+build_docker:
+	docker build -t quackmeup .
