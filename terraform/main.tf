@@ -163,7 +163,7 @@ resource "aws_iam_policy" "log_exporter_policy" {
           "ssm:GetParameter",
           "ssm:PutParameter"
         ],
-        Resource = "arn:aws:ssm:${var.REGION}:*:*log-exporter*"
+        Resource = "arn:aws:ssm:*:*:*log-exporter*"
       }
     ]
   })
