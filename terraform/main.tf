@@ -88,6 +88,26 @@ data "aws_iam_policy_document" "ecr_policy" {
   }
 }
 
+resource "aws_iam_policy" "lambda_logging_policy" {
+  name        = "lambda_logging_policy"
+  description = "IAM policy for logging from a lambda"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/aws/lambda/*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role" "lambda_role" {
   name = "log_exporter_function_role"
   assume_role_policy = <<EOF
@@ -107,6 +127,11 @@ resource "aws_iam_role" "lambda_role" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_logs_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_logging_policy.arn
+}
+
 resource "aws_lambda_function" "log_exporter_function" {
   function_name = "log_exporter_function"
 
@@ -119,10 +144,4 @@ resource "aws_lambda_function" "log_exporter_function" {
 
   # IAM role
   role = aws_iam_role.lambda_role.arn
-
-  # VPC settings, if necessary
-  # vpc_config {
-  #   subnet_ids         = [aws_subnet.log_exporter_function.id]
-  #   security_group_ids = [aws_security_group.log_exporter_function.id]
-  # }
 }
