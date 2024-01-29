@@ -15,3 +15,6 @@ format_logs:
 
 build_docker:
 	docker build -t quackmeup .
+
+log_exporter:
+	poetry run python -m src.log_exporter.lambda_handler
