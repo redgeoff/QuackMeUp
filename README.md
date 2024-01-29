@@ -34,7 +34,7 @@ Install the awscli and run `aws configure`
 
 `poetry run pre-commit install`
 
-`brew install duckdb` # TODO: install via docker-compose?
+`brew install duckdb`
 
 ## Deploy infrastructure
 
@@ -45,8 +45,6 @@ Install the awscli and run `aws configure`
 `./terraform/plan.sh`
 
 `./terraform/apply.sh`
-
-TODO: configure CloudWatch to S3 exporter
 
 ### Install QuackMeUp
 

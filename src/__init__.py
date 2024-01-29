@@ -1,4 +1,4 @@
 from dotenv import load_dotenv
 
-# Load .env.dev file
+# Load .env file
 load_dotenv(dotenv_path=".env")

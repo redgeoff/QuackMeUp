@@ -19,7 +19,7 @@ LOGS_BUCKET_NAME = os.getenv("LOGS_BUCKET_NAME")
 
 PROJECT_NAME = os.getenv("PROJECT_NAME")
 
-REGION = os.getenv("REGION")
+REGION = os.getenv("AWS_REGION")
 SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log_exporter/last_export"
 SKIP_UNTIL_HOURS = 12
 
@@ -156,9 +156,8 @@ def lambda_handler(_event: Any, _context: Any) -> None:
     log_groups_to_export = to_log_groups_to_export(log_groups)
 
     log_groups_to_export.append(LOGS_TO_EXPORT)
-    print(log_groups_to_export)  # TODO: remove this line
 
-    # schedule_exports(log_groups_to_export)
+    schedule_exports(log_groups_to_export)
 
 
 if __name__ == "__main__":
