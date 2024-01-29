@@ -20,7 +20,7 @@ LOGS_BUCKET_NAME = os.getenv("LOGS_BUCKET_NAME")
 PROJECT_NAME = os.getenv("PROJECT_NAME")
 
 REGION = os.getenv("REGION")
-SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log_exporter/last_export"
+SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log-exporter/last-export"
 SKIP_UNTIL_HOURS = 12
 
 logs = boto3.client("logs", region_name=REGION)

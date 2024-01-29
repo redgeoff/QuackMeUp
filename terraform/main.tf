@@ -34,6 +34,34 @@ resource "aws_s3_bucket" "quackmeup_bucket" {
   bucket = var.LOGS_BUCKET_NAME
 }
 
+data "aws_iam_policy_document" "s3_bucket_policy" {
+  statement {
+    actions   = ["s3:GetBucketAcl"]
+    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+    }
+  }
+
+  statement {
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "quackmeup_bucket_policy" {
+  bucket = aws_s3_bucket.quackmeup_bucket.bucket
+  policy = data.aws_iam_policy_document.s3_bucket_policy.json
+}
+
+
 resource "aws_ecr_repository" "quackmeup_repository" {
   name = "quackmeup"
 }
@@ -112,6 +140,23 @@ resource "aws_iam_policy" "lambda_logging_policy" {
   })
 }
 
+data "aws_iam_policy_document" "log_exporter_policy" {
+  statement {
+    actions   = [
+      "logs:DescribeLogGroups",
+      "logs:ListTagsForResource",
+      "logs:ListTagsLogGroup",
+      "logs:CreateExportTask"
+    ]
+    resources = ["arn:aws:logs:${var.REGION}:*:*"]
+  }
+
+  statement {
+    actions   = ["ssm:GetParameter", "ssm:PutParameter"]
+    resources = ["arn:aws:ssm:${var.REGION}:*:*log-exporter*"]
+  }
+}
+
 resource "aws_iam_role" "lambda_role" {
   name = "log_exporter_function_role"
   assume_role_policy = <<EOF
@@ -134,6 +179,17 @@ EOF
 resource "aws_iam_role_policy_attachment" "lambda_logs_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_logging_policy.arn
+}
+
+resource "aws_iam_policy" "log_exporter_policy" {
+  name        = "log_exporter_policy"
+  description = "Additional IAM policy for log exporting"
+  policy      = data.aws_iam_policy_document.log_exporter_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "log_exporter_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.log_exporter_policy.arn
 }
 
 resource "aws_lambda_function" "log_exporter_function" {
