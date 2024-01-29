@@ -140,21 +140,33 @@ resource "aws_iam_policy" "lambda_logging_policy" {
   })
 }
 
-data "aws_iam_policy_document" "log_exporter_policy" {
-  statement {
-    actions   = [
-      "logs:DescribeLogGroups",
-      "logs:ListTagsForResource",
-      "logs:ListTagsLogGroup",
-      "logs:CreateExportTask"
-    ]
-    resources = ["arn:aws:logs:${var.REGION}:*:*"]
-  }
+resource "aws_iam_policy" "log_exporter_policy" {
+  name        = "log_exporter_policy"
+  description = "Policy for the Log Exporter Lambda function"
 
-  statement {
-    actions   = ["ssm:GetParameter", "ssm:PutParameter"]
-    resources = ["arn:aws:ssm:${var.REGION}:*:*log-exporter*"]
-  }
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:DescribeLogGroups",
+          "logs:ListTagsForResource",
+          "logs:ListTagsLogGroup",
+          "logs:CreateExportTask"
+        ],
+        Resource = "arn:aws:logs:${var.REGION}:*:*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:GetParameter",
+          "ssm:PutParameter"
+        ],
+        Resource = "arn:aws:ssm:${var.REGION}:*:*log-exporter*"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role" "lambda_role" {
@@ -179,12 +191,6 @@ EOF
 resource "aws_iam_role_policy_attachment" "lambda_logs_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_logging_policy.arn
-}
-
-resource "aws_iam_policy" "log_exporter_policy" {
-  name        = "log_exporter_policy"
-  description = "Additional IAM policy for log exporting"
-  policy      = data.aws_iam_policy_document.log_exporter_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "log_exporter_policy_attachment" {
