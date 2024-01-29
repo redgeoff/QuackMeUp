@@ -19,7 +19,7 @@ LOGS_BUCKET_NAME = os.getenv("LOGS_BUCKET_NAME")
 
 PROJECT_NAME = os.getenv("PROJECT_NAME")
 
-REGION = os.getenv("AWS_REGION")
+REGION = os.getenv("REGION")
 SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log_exporter/last_export"
 SKIP_UNTIL_HOURS = 12
 

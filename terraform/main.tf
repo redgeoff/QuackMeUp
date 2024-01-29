@@ -1,4 +1,4 @@
-variable "AWS_REGION" {
+variable "REGION" {
   description = "The region where AWS operations will take place"
   type        = string
   default     = "us-east-1"
@@ -8,11 +8,11 @@ variable "PROJECT_NAME" {
 }
 
 provider "aws" {
-  region = var.AWS_REGION
+  region = var.REGION
 }
 
 locals {
-  aws_region = var.AWS_REGION
+  aws_region = var.REGION
 }
 
 terraform {
@@ -106,7 +106,7 @@ resource "aws_iam_policy" "lambda_logging_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],
-        Resource = "arn:aws:logs:${var.AWS_REGION}:*:log-group:/aws/lambda/*"
+        Resource = "arn:aws:logs:${var.REGION}:*:log-group:/aws/lambda/*"
       }
     ]
   })
@@ -153,7 +153,7 @@ resource "aws_lambda_function" "log_exporter_function" {
     variables = {
       PROJECT_NAME    = var.PROJECT_NAME
       LOGS_BUCKET_NAME = var.LOGS_BUCKET_NAME
-      AWS_REGION = var.AWS_REGION
+      REGION = var.REGION
     }
   }
 }
