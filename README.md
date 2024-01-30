@@ -40,6 +40,8 @@ Install the awscli and run `aws configure`
 
 [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
 
+Load the AWS Console and manually create an S3 bucket called `quackmeup-terraform-bucket`, which will be used to remotely store the terraform state.
+
 `./terraform/init.sh`
 
 `./terraform/plan.sh`
