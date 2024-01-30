@@ -35,19 +35,20 @@ def test_get_log_groups(mock_boto_client):
     assert mock_logs_client.describe_log_groups.call_count == 2
 
 
-# @patch('boto3.client')
-# def test_to_log_groups_to_export(mock_boto_client):
-#   mock_logs = MagicMock()
-#   mock_logs.list_tags_log_group.return_value = {"tags": {"ExportToS3": "true"}}
-#   mock_boto_client.return_value = mock_logs
+@patch("src.log_exporter.lambda_handler.boto3.client")
+def test_to_log_groups_to_export(mock_boto_client):
+    mock_logs = MagicMock()
+    mock_logs.list_tags_log_group.return_value = {"tags": {"ExportToS3": "true"}}
+    mock_boto_client.return_value = mock_logs
 
-#   log_groups = [{"logGroupName": "group1"}, {"logGroupName": "group2"}]
+    log_groups = [{"logGroupName": "group1"}, {"logGroupName": "group2"}]
 
-#   result = to_log_groups_to_export(log_groups)
+    result = to_log_groups_to_export(log_groups)
 
-#   assert result == ["group1", "group2"]
+    assert result == ["group1", "group2"]
 
-# @patch('os.getenv')
+
+# @patch('src.log_exporter.lambda_handler.os.getenv')
 # def test_get_s3_bucket(mock_getenv):
 #   mock_getenv.return_value = "test_bucket"
 
@@ -55,24 +56,29 @@ def test_get_log_groups(mock_boto_client):
 
 #   assert result == "test_bucket"
 
-# @patch('boto3.client')
-# def test_get_last_export_value(mock_boto_client):
-#   mock_ssm = MagicMock()
-#   mock_ssm.get_parameter.return_value = {"Parameter": {"Value": "12345"}}
-#   mock_boto_client.return_value = mock_ssm
 
-#   result = get_last_export_value("test_param")
+@patch("src.log_exporter.lambda_handler.boto3.client")
+def test_get_last_export_value(mock_boto_client):
+    mock_ssm = MagicMock()
+    mock_ssm.get_parameter.return_value = {"Parameter": {"Value": "12345"}}
+    mock_boto_client.return_value = mock_ssm
 
-#   assert result == "12345"
+    result = get_last_export_value("test_param")
 
-# @patch('boto3.client')
-# def test_put_last_export_value(mock_boto_client):
-#   mock_ssm = MagicMock()
-#   mock_boto_client.return_value = mock_ssm
+    assert result == "12345"
 
-#   put_last_export_value("test_param", 12345)
 
-#   mock_ssm.put_parameter.assert_called_once_with(Name="test_param", Type="String", Value="12345", Overwrite=True)
+@patch("src.log_exporter.lambda_handler.boto3.client")
+def test_put_last_export_value(mock_boto_client):
+    mock_ssm = MagicMock()
+    mock_boto_client.return_value = mock_ssm
+
+    put_last_export_value("test_param", 12345)
+
+    mock_ssm.put_parameter.assert_called_once_with(
+        Name="test_param", Type="String", Value="12345", Overwrite=True
+    )
+
 
 # @patch('src.lambda_handler.get_s3_bucket')
 # @patch('src.lambda_handler.get_log_groups')
