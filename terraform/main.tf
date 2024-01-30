@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 2.15"
+    }
+  }
+
+  backend "s3" {
+    bucket = "quackmeup-terraform-bucket"
+    key    = "terraform-state/quackmeup/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 variable "REGION" {
   description = "The region where AWS operations will take place"
   type        = string
@@ -13,15 +28,6 @@ provider "aws" {
 
 locals {
   aws_region = var.REGION
-}
-
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 2.15"
-    }
-  }
 }
 
 variable "LOGS_BUCKET_NAME" {
