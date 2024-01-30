@@ -15,12 +15,8 @@ LOGS_TO_EXPORT: List[str] = [
     # "/aws/lambda/mylambda",
 ]
 
-LOGS_BUCKET_NAME = os.getenv("LOGS_BUCKET_NAME")
-
-PROJECT_NAME = os.getenv("PROJECT_NAME")
 
 REGION = os.getenv("REGION")
-SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log-exporter/last-export"
 SKIP_UNTIL_HOURS = 12
 
 
@@ -65,6 +61,7 @@ def to_log_groups_to_export(log_groups: List[Dict[str, Any]]) -> List[str]:
 
 
 def get_s3_bucket() -> str:
+    LOGS_BUCKET_NAME = os.getenv("LOGS_BUCKET_NAME")
     assert LOGS_BUCKET_NAME, "LOGS_BUCKET_NAME must be set"
     return LOGS_BUCKET_NAME
 
@@ -93,6 +90,8 @@ def put_last_export_value(param_name: str, export_to_time: int) -> None:
 
 def schedule_exports(groups_to_export: List[str]) -> None:
     logs = boto3.client("logs", region_name=REGION)
+    PROJECT_NAME = os.getenv("PROJECT_NAME")
+    SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log-exporter/last-export"
 
     for log_group in groups_to_export:
         param_name = f"/{SSM_KEY_PREFIX}/{log_group}".replace("//", "/")
