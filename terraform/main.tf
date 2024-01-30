@@ -18,6 +18,7 @@ variable "REGION" {
   type        = string
   default     = "us-east-1"
 }
+
 variable "PROJECT_NAME" {
   type        = string
 }

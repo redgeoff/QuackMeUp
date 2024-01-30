@@ -22,6 +22,8 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 
 ### Install dependencies
 
+[Install Docker](https://docs.docker.com/get-docker/)
+
 Install the awscli and run `aws configure`
 
 `cp .env.example .env` and then edit `.env`
