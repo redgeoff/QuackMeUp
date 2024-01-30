@@ -11,7 +11,7 @@ from botocore.exceptions import ClientError
 from src.logger import logger
 
 # Set to export specific logs or you can flag a log for export by tagging it with ExportToS3=true
-LOGS_TO_EXPORT = [
+LOGS_TO_EXPORT: List[str] = [
     # "/aws/lambda/mylambda",
 ]
 
@@ -51,7 +51,7 @@ def get_log_groups() -> List[Dict[str, Any]]:
     return log_groups
 
 
-def to_log_groups_to_export(log_groups: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def to_log_groups_to_export(log_groups: List[Dict[str, Any]]) -> List[str]:
     groups_to_export = []
 
     for log_group in log_groups:
@@ -64,6 +64,7 @@ def to_log_groups_to_export(log_groups: List[Dict[str, Any]]) -> List[Dict[str, 
 
 
 def get_s3_bucket() -> str:
+    assert LOGS_BUCKET_NAME, "LOGS_BUCKET_NAME must be set"
     return LOGS_BUCKET_NAME
 
 
@@ -149,13 +150,10 @@ def schedule_exports(groups_to_export: List[str]) -> None:
 
 
 def lambda_handler(_event: Any, _context: Any) -> None:
-    if not get_s3_bucket():
-        raise Exception("LOGS_BUCKET_NAME must be set")
-
     log_groups = get_log_groups()
     log_groups_to_export = to_log_groups_to_export(log_groups)
 
-    log_groups_to_export.append(LOGS_TO_EXPORT)
+    log_groups_to_export.extend(LOGS_TO_EXPORT)
 
     schedule_exports(log_groups_to_export)
 
