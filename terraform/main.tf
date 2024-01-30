@@ -249,3 +249,8 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.lambda_schedule.arn
 }
+
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.log_exporter_function.function_name}"
+  retention_in_days = 90
+}
