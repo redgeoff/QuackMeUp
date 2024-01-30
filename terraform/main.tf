@@ -28,6 +28,7 @@ provider "aws" {
 
 locals {
   aws_region = var.REGION
+  formatted_timestamp = formatdate("YYYYMMDDHHmmss", timestamp())
 }
 
 variable "LOGS_BUCKET_NAME" {
@@ -99,7 +100,7 @@ EOF
 data "aws_caller_identity" "current" {}
 
 resource "docker_image" "quackmeup_image" {
-  name = "${aws_ecr_repository.quackmeup_repository.repository_url}:latest"
+  name = "${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}"
   build {
     context    = pathexpand("..")
     dockerfile = "../Dockerfile"
@@ -109,9 +110,9 @@ resource "docker_image" "quackmeup_image" {
 resource "null_resource" "push_image" {
   provisioner "local-exec" {
     command = <<EOF
-    docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url} ..
+    docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp} ..
     echo $(aws ecr get-login-password --region ${local.aws_region}) | docker login --username AWS --password-stdin ${aws_ecr_repository.quackmeup_repository.repository_url}
-    docker push ${aws_ecr_repository.quackmeup_repository.repository_url}
+    docker push ${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}
     EOF
   }
   triggers = {
@@ -207,8 +208,8 @@ resource "aws_iam_role_policy_attachment" "log_exporter_policy_attachment" {
 resource "aws_lambda_function" "log_exporter_function" {
   function_name = "log_exporter_function"
 
-  # The Docker image URI
-  image_uri = "${aws_ecr_repository.quackmeup_repository.repository_url}:latest"
+  # The Docker image URI. Use a timestamp to ensure the latest image is loaded
+  image_uri = "${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}"
 
   # The command that is passed to the function
   package_type = "Image"
@@ -224,4 +225,6 @@ resource "aws_lambda_function" "log_exporter_function" {
       REGION = var.REGION
     }
   }
+
+  depends_on = [null_resource.push_image]
 }
