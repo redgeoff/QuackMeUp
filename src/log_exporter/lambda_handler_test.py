@@ -9,19 +9,30 @@ from src.log_exporter.lambda_handler import (
 )
 
 
-@patch("boto3.client")
+@patch("src.log_exporter.lambda_handler.boto3.client")
 def test_get_log_groups(mock_boto_client):
-    mock_logs = MagicMock()
-    mock_logs.describe_log_groups.side_effect = [
-        {"logGroups": ["group1", "group2"], "nextToken": "token"},
-        {"logGroups": ["group3"]},
+    # Set up the mock client and its method
+    mock_logs_client = MagicMock()
+    mock_logs_client.describe_log_groups.side_effect = [
+        {
+            "logGroups": [{"logGroupName": "group1"}, {"logGroupName": "group2"}],
+            "nextToken": "token",
+        },
+        {"logGroups": [{"logGroupName": "group3"}]},
     ]
-    mock_boto_client.return_value = mock_logs
+    mock_boto_client.return_value = mock_logs_client
 
+    # Call the function
     result = get_log_groups()
 
-    assert result == ["group1", "group2", "group3"]
-    assert mock_logs.describe_log_groups.call_count == 2
+    # Assertions
+    expected_result = [
+        {"logGroupName": "group1"},
+        {"logGroupName": "group2"},
+        {"logGroupName": "group3"},
+    ]
+    assert result == expected_result
+    assert mock_logs_client.describe_log_groups.call_count == 2
 
 
 # @patch('boto3.client')

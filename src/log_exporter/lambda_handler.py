@@ -23,11 +23,10 @@ REGION = os.getenv("REGION")
 SSM_KEY_PREFIX = f"/{PROJECT_NAME}/log-exporter/last-export"
 SKIP_UNTIL_HOURS = 12
 
-logs = boto3.client("logs", region_name=REGION)
-ssm = boto3.client("ssm", region_name=REGION)
-
 
 def get_log_groups() -> List[Dict[str, Any]]:
+    logs = boto3.client("logs", region_name=REGION)
+
     next_token = None
     log_groups = []
     command = {"nextToken": next_token}
@@ -52,6 +51,8 @@ def get_log_groups() -> List[Dict[str, Any]]:
 
 
 def to_log_groups_to_export(log_groups: List[Dict[str, Any]]) -> List[str]:
+    logs = boto3.client("logs", region_name=REGION)
+
     groups_to_export = []
 
     for log_group in log_groups:
@@ -69,6 +70,8 @@ def get_s3_bucket() -> str:
 
 
 def get_last_export_value(param_name: str) -> str:
+    ssm = boto3.client("ssm", region_name=REGION)
+
     value = "0"
     try:
         param = ssm.get_parameter(Name=param_name)
@@ -82,12 +85,15 @@ def get_last_export_value(param_name: str) -> str:
 
 
 def put_last_export_value(param_name: str, export_to_time: int) -> None:
+    ssm = boto3.client("ssm", region_name=REGION)
     ssm.put_parameter(
         Name=param_name, Type="String", Value=str(export_to_time), Overwrite=True
     )
 
 
 def schedule_exports(groups_to_export: List[str]) -> None:
+    logs = boto3.client("logs", region_name=REGION)
+
     for log_group in groups_to_export:
         param_name = f"/{SSM_KEY_PREFIX}/{log_group}".replace("//", "/")
 
