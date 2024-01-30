@@ -94,5 +94,5 @@ jobs:
       - name: Terraform Validate
         run: |
           cd terraform
-          ./init.sh
+          ./init.no_backend.sh 
           ./validate.sh
