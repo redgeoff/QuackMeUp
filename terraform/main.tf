@@ -1,14 +1,18 @@
-variable "aws_region" {
+variable "REGION" {
   description = "The region where AWS operations will take place"
+  type        = string
   default     = "us-east-1"
+}
+variable "PROJECT_NAME" {
+  type        = string
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = var.REGION
 }
 
 locals {
-  aws_region = var.aws_region
+  aws_region = var.REGION
 }
 
 terraform {
@@ -29,6 +33,34 @@ variable "LOGS_BUCKET_NAME" {
 resource "aws_s3_bucket" "quackmeup_bucket" {
   bucket = var.LOGS_BUCKET_NAME
 }
+
+data "aws_iam_policy_document" "s3_bucket_policy" {
+  statement {
+    actions   = ["s3:GetBucketAcl"]
+    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+    }
+  }
+
+  statement {
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "quackmeup_bucket_policy" {
+  bucket = aws_s3_bucket.quackmeup_bucket.bucket
+  policy = data.aws_iam_policy_document.s3_bucket_policy.json
+}
+
 
 resource "aws_ecr_repository" "quackmeup_repository" {
   name = "quackmeup"
@@ -102,7 +134,36 @@ resource "aws_iam_policy" "lambda_logging_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],
-        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/aws/lambda/*"
+        Resource = "arn:aws:logs:${var.REGION}:*:log-group:/aws/lambda/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "log_exporter_policy" {
+  name        = "log_exporter_policy"
+  description = "Policy for the Log Exporter Lambda function"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:DescribeLogGroups",
+          "logs:ListTagsForResource",
+          "logs:ListTagsLogGroup",
+          "logs:CreateExportTask"
+        ],
+        Resource = "arn:aws:logs:${var.REGION}:*:*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:GetParameter",
+          "ssm:PutParameter"
+        ],
+        Resource = "arn:aws:ssm:*:*:*log-exporter*"
       }
     ]
   })
@@ -132,6 +193,11 @@ resource "aws_iam_role_policy_attachment" "lambda_logs_attachment" {
   policy_arn = aws_iam_policy.lambda_logging_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "log_exporter_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.log_exporter_policy.arn
+}
+
 resource "aws_lambda_function" "log_exporter_function" {
   function_name = "log_exporter_function"
 
@@ -144,4 +210,12 @@ resource "aws_lambda_function" "log_exporter_function" {
 
   # IAM role
   role = aws_iam_role.lambda_role.arn
+
+  environment {
+    variables = {
+      PROJECT_NAME    = var.PROJECT_NAME
+      LOGS_BUCKET_NAME = var.LOGS_BUCKET_NAME
+      REGION = var.REGION
+    }
+  }
 }
