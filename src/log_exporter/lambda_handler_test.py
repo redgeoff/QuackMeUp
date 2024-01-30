@@ -75,8 +75,9 @@ def test_put_last_export_value(mock_boto_client):
 def getenv_side_effect(env_name):
     if env_name == "LOGS_BUCKET_NAME":
         return "my-bucket-name"
-    elif env_name == "PROJECT_NAME":
+    if env_name == "PROJECT_NAME":
         return "quackmeup"
+    raise ValueError(f"Unexpected environment variable: {env_name}")
 
 
 @patch("src.log_exporter.lambda_handler.boto3.client")
