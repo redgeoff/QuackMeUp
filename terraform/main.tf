@@ -13,33 +13,32 @@ terraform {
   }
 }
 
-variable "REGION" {
+variable "region" {
   description = "The region where AWS operations will take place"
   type        = string
   default     = "us-east-1"
 }
 
-variable "PROJECT_NAME" {
-  type        = string
+variable "project_name" {
+  type = string
 }
 
 provider "aws" {
-  region = var.REGION
+  region = var.region
 }
 
 locals {
-  aws_region = var.REGION
+  aws_region          = var.region
   formatted_timestamp = formatdate("YYYYMMDDHHmmss", timestamp())
 }
 
-variable "LOGS_BUCKET_NAME" {
+variable "logs_bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
-  default     = "default-logs-bucket-name"
 }
 
 resource "aws_s3_bucket" "quackmeup_bucket" {
-  bucket = var.LOGS_BUCKET_NAME
+  bucket = var.logs_bucket_name
 }
 
 data "aws_iam_policy_document" "s3_bucket_policy" {
@@ -49,7 +48,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+      identifiers = ["logs.${var.region}.amazonaws.com"]
     }
   }
 
@@ -59,7 +58,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["logs.${var.REGION}.amazonaws.com"]
+      identifiers = ["logs.${var.region}.amazonaws.com"]
     }
   }
 }
@@ -142,7 +141,7 @@ resource "aws_iam_policy" "lambda_logging_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],
-        Resource = "arn:aws:logs:${var.REGION}:*:log-group:/aws/lambda/*"
+        Resource = "arn:aws:logs:${var.region}:*:log-group:/aws/lambda/*"
       }
     ]
   })
@@ -163,7 +162,7 @@ resource "aws_iam_policy" "log_exporter_policy" {
           "logs:ListTagsLogGroup",
           "logs:CreateExportTask"
         ],
-        Resource = "arn:aws:logs:${var.REGION}:*:*"
+        Resource = "arn:aws:logs:${var.region}:*:*"
       },
       {
         Effect = "Allow",
@@ -178,7 +177,7 @@ resource "aws_iam_policy" "log_exporter_policy" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "log_exporter_function_role"
+  name               = "log_exporter_function_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -212,18 +211,16 @@ resource "aws_lambda_function" "log_exporter_function" {
   # The Docker image URI. Use a timestamp to ensure the latest image is loaded
   image_uri = "${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}"
 
-  # The command that is passed to the function
   package_type = "Image"
   timeout      = 60
 
-  # IAM role
   role = aws_iam_role.lambda_role.arn
 
   environment {
     variables = {
-      PROJECT_NAME    = var.PROJECT_NAME
-      LOGS_BUCKET_NAME = var.LOGS_BUCKET_NAME
-      REGION = var.REGION
+      project_name     = var.project_name
+      logs_bucket_name = var.logs_bucket_name
+      region           = var.region
     }
   }
 
