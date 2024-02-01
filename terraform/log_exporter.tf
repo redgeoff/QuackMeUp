@@ -1,39 +1,5 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 2.15"
-    }
-  }
-
-  backend "s3" {
-    bucket = "quackmeup-terraform-bucket"
-    key    = "terraform-state/quackmeup/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
-variable "region" {
-  description = "The region where AWS operations will take place"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "project_name" {
-  type = string
-}
-
-provider "aws" {
-  region = var.region
-}
-
-locals {
-  aws_region          = var.region
-  formatted_timestamp = formatdate("YYYYMMDDHHmmss", timestamp())
-}
-
 variable "logs_bucket_name" {
-  description = "The name of the S3 bucket"
+  description = "The name of the S3 bucket for storing the logs exported to S3"
   type        = string
 }
 
@@ -66,65 +32,6 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 resource "aws_s3_bucket_policy" "quackmeup_bucket_policy" {
   bucket = aws_s3_bucket.quackmeup_bucket.bucket
   policy = data.aws_iam_policy_document.s3_bucket_policy.json
-}
-
-
-resource "aws_ecr_repository" "quackmeup_repository" {
-  name = "quackmeup"
-}
-
-resource "aws_ecr_lifecycle_policy" "quackmeup_lifecycle_policy" {
-  repository = aws_ecr_repository.quackmeup_repository.name
-
-  policy = <<EOF
-{
-  "rules": [
-    {
-      "rulePriority": 1,
-      "description": "Expire images older than 7 days",
-      "selection": {
-        "tagStatus": "untagged",
-        "countType": "sinceImagePushed",
-        "countUnit": "days",
-        "countNumber": 7
-      },
-      "action": {
-        "type": "expire"
-      }
-    }
-  ]
-}
-EOF
-}
-
-data "aws_caller_identity" "current" {}
-
-resource "docker_image" "quackmeup_image" {
-  name = "${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}"
-  build {
-    context    = pathexpand("..")
-    dockerfile = "../Dockerfile"
-  }
-}
-
-resource "null_resource" "push_image" {
-  provisioner "local-exec" {
-    command = <<EOF
-    docker build -t ${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp} ..
-    echo $(aws ecr get-login-password --region ${local.aws_region}) | docker login --username AWS --password-stdin ${aws_ecr_repository.quackmeup_repository.repository_url}
-    docker push ${aws_ecr_repository.quackmeup_repository.repository_url}:${local.formatted_timestamp}
-    EOF
-  }
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
-
-data "aws_iam_policy_document" "ecr_policy" {
-  statement {
-    actions   = ["ecr:GetAuthorizationToken"]
-    resources = ["*"]
-  }
 }
 
 resource "aws_iam_policy" "lambda_logging_policy" {
