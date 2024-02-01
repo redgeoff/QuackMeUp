@@ -17,8 +17,10 @@ while IFS='=' read -r key value; do
         value="${value#\'}"
         value="${value%\'}"
 
+        key_lower=$(echo "$key" | tr '[:upper:]' '[:lower:]')
+
         # Prepare the new variable name with TF_VAR_ prefix
-        new_var_name="TF_VAR_$key"
+        new_var_name="TF_VAR_$key_lower"
 
         # Export the variable with the new name
         export "$new_var_name"="$value"
