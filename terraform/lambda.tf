@@ -1,39 +1,3 @@
-variable "logs_bucket_name" {
-  description = "The name of the S3 bucket for storing the logs exported to S3"
-  type        = string
-}
-
-resource "aws_s3_bucket" "quackmeup_bucket" {
-  bucket = var.logs_bucket_name
-}
-
-data "aws_iam_policy_document" "s3_bucket_policy" {
-  statement {
-    actions   = ["s3:GetBucketAcl"]
-    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["logs.${var.region}.amazonaws.com"]
-    }
-  }
-
-  statement {
-    actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.quackmeup_bucket.arn}/*"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["logs.${var.region}.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "quackmeup_bucket_policy" {
-  bucket = aws_s3_bucket.quackmeup_bucket.bucket
-  policy = data.aws_iam_policy_document.s3_bucket_policy.json
-}
-
 resource "aws_iam_policy" "lambda_logging_policy" {
   name        = "lambda_logging_policy"
   description = "IAM policy for logging from a lambda"
@@ -132,29 +96,4 @@ resource "aws_lambda_function" "log_exporter_function" {
   }
 
   depends_on = [null_resource.push_image]
-}
-
-resource "aws_cloudwatch_event_rule" "lambda_schedule" {
-  name                = "every-4-hours"
-  description         = "Trigger Lambda every 4 hours"
-  schedule_expression = "rate(4 hours)"
-}
-
-resource "aws_cloudwatch_event_target" "invoke_lambda" {
-  rule      = aws_cloudwatch_event_rule.lambda_schedule.name
-  target_id = "InvokeLambdaFunction"
-  arn       = aws_lambda_function.log_exporter_function.arn
-}
-
-resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.log_exporter_function.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.lambda_schedule.arn
-}
-
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.log_exporter_function.function_name}"
-  retention_in_days = 90
 }
