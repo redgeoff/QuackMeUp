@@ -9,6 +9,7 @@ import duckdb
 from src.dirs import root_dir
 
 DUCKDB_FILE = os.getenv("DUCKDB_FILE")
+assert DUCKDB_FILE, "Please set the DUCKDB_FILE environment variable."
 
 input_path = os.path.join(root_dir, DUCKDB_FILE)
 
