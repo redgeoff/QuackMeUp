@@ -18,3 +18,6 @@ build_docker:
 
 log_exporter:
 	poetry run python -m src.log_exporter.lambda_handler
+
+query_duckdb:
+	poetry run python -m src.query_duckdb
