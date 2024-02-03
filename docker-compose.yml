@@ -33,6 +33,7 @@ services:
       MB_DB_PASS: postgres
       MB_DB_HOST: host.docker.internal
       MB_PLUGINS_DIR: /home/plugins
+      # MB_IS_METABOT_ENABLED: true
     volumes:
       - ./ignored:/container/directory
     expose:
