@@ -29,7 +29,7 @@ Install Python, e.g. `brew install python@3.11`
 
 Install the Git hooks for code formatting with black: `poetry run pre-commit install`
 
-`brew install duckdb`
+Install DuckDB, e.g. `brew install duckdb`
 
 ### Configure the .env file
 
