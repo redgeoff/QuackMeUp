@@ -1,4 +1,4 @@
-# QuackMeUp: Streamlined Data Analytics in a Pythonic Pond
+# QuackMeUp: Turnkey Data Analysis Using DuckDB and Metabase for Postgres & CloudWatch
 :duck: _Dive into the world of data with a quack!_
 
 ![QuackMeUp](QuackMeUp.png)
@@ -13,40 +13,52 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 - **Metabase Visualization**: Transform data into insights with intuitive Metabase dashboards.
 - **Modular Design**: Flexible architecture allows easy extension and customization.
 
-**Ideal for:**
-- Software engineers seeking an integrated approach to data handling.
-- Data analysts looking to combine and visualize complex datasets.
-- Anyone enthusiastic about Python and open-source data analysis tools.
-
 ## Installation
 
 ### Install dependencies
 
 [Install Docker](https://docs.docker.com/get-docker/)
 
-Install the awscli and run `aws configure`
+[Install the awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and run `aws configure`
 
-`cp .env.example .env` and then edit `.env`
-
-`brew install python@3.11`
+Install Python, e.g. `brew install python@3.11`
 
 `python3.11 -m pip install poetry`
 
 `poetry install`
 
-`poetry run pre-commit install`
+Install the Git hooks for code formatting with black: `poetry run pre-commit install`
 
 `brew install duckdb`
+
+## Configure the .env file
+
+`cp .env.example .env` and then edit `.env`
+
+Choose a value for `TERRAFORM_BUCKET_NAME` that will be unique across all AWS users, e.g. `myorg-quackmeup-terraform-bucket`, where `myorg` is a unique name for your organization. This bucket will be used to remotely store your Terraform state.
+
+Choose a value for `LOGS_BUCKET_NAME` that will be unique across all AWS users, e.g. `myorg-quackmeup-logs`, where `myorg` is a unique name for your organization. This bucket will be used to store logs exported from CloudWatch.
+
+Be sure to substitute the value of `PG_CONNECTION_STRING` with the connection string for your Postgres instance. Ideally, you’d use the connection string for a read replica.
+
+You can leave the rest of the values in `.env` intact unless you prefer them to be different.
 
 ## Deploy infrastructure
 
 [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
 
-Load the AWS Console and manually create an S3 bucket called `quackmeup-terraform-bucket`, which will be used to remotely store the terraform state.
+Load the AWS Console and manually create an S3 bucket with the same name that you specified for `TERRAFORM_BUCKET_NAME`.
 
 `./terraform/init.sh`
 
 `./terraform/plan.sh`
+
+The following `apply.sh` script will then:
+- Create an S3 bucket for `LOGS_BUCKET_NAME`
+- Create an ECR repository for the Lambda code
+- Build and push a Docker image to this ECR repository
+- Deploy a Lambda that will schedule the export of the latest CloudWatch logs to the S3 bucket
+- Create IAM policies and roles as needed
 
 `./terraform/apply.sh`
 

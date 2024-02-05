@@ -7,9 +7,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "quackmeup-terraform-bucket"
+    bucket = var.terraform_bucket_name
     key    = "terraform-state/quackmeup/terraform.tfstate"
-    region = "us-east-1"
+    region = var.region
   }
 }
 
