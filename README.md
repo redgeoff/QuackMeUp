@@ -31,7 +31,7 @@ Install the Git hooks for code formatting with black: `poetry run pre-commit ins
 
 `brew install duckdb`
 
-## Configure the .env file
+### Configure the .env file
 
 `cp .env.example .env` and then edit `.env`
 
@@ -43,7 +43,7 @@ Be sure to substitute the value of `PG_CONNECTION_STRING` with the connection st
 
 You can leave the rest of the values in `.env` intact unless you prefer them to be different.
 
-## Deploy infrastructure
+### Deploy infrastructure
 
 [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
 
@@ -57,10 +57,14 @@ The following `apply.sh` script will then:
 - Create an S3 bucket for `LOGS_BUCKET_NAME`
 - Create an ECR repository for the Lambda code
 - Build and push a Docker image to this ECR repository
-- Deploy a Lambda that will schedule the export of the latest CloudWatch logs to the S3 bucket
+- Schedule a Lambda that will export the latest CloudWatch logs to the S3 bucket every 4 hours
 - Create IAM policies and roles as needed
 
 `./terraform/apply.sh`
+
+### Tag target logs for export
+
+Open the AWS Console and navigate to CloudWatch Log Groups. For each log that you wish to be exported to S3, simply add a tag with the name=`ExportToS3` and value=`true`. The log exporter Lambda runs every 4 hours so you'll have to wait at least 4 hours before you start seeing any data in the S3 bucket.
 
 ### Install QuackMeUp
 
