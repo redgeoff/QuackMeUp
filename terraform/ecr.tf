@@ -1,8 +1,5 @@
 resource "aws_ecr_repository" "quackmeup_repository" {
   name = "quackmeup"
-
-  # Uncomment to destroy the repository even if it has images in it
-  # force_destroy = true
 }
 
 resource "aws_ecr_lifecycle_policy" "quackmeup_lifecycle_policy" {
