@@ -1,3 +1,7 @@
+variable "terraform_bucket_name" {
+  type = string
+}
+
 variable "region" {
   description = "The region where AWS operations will take place"
   type        = string
