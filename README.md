@@ -15,7 +15,7 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
 
 ## Installation
 
-### Install dependencies
+### Install the dependencies
 
   1. [Install Docker](https://docs.docker.com/get-docker/)
   1. [Install the awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and run `aws configure`
@@ -33,7 +33,7 @@ QuackMeUp is an open-source, Python-based toolkit designed to simplify the integ
   1. Be sure to substitute the value of `PG_CONNECTION_STRING` with the connection string for your Postgres instance. Ideally, you’d use the connection string for a read replica.
   1. You can leave the rest of the values in `.env` intact unless you prefer them to be different.
 
-### Deploy infrastructure
+### Deploy the infrastructure
 
   1. [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli#install-terraform)
   1. Load the AWS Console and manually create an S3 bucket with the same name that you specified for `TERRAFORM_BUCKET_NAME`.
@@ -59,7 +59,7 @@ Open the AWS Console and navigate to CloudWatch Log Groups. For each log that yo
   1. Run the Docker containers: `docker-compose up -d`
   1. Seed the Metabase config so that you can just log in: `./scripts/metabase/import_db.sh`
 
-## Execute pipeline
+## Execute the pipeline
 
   1. After the logs have been updated, run the following pipeline to ingest the updated data into DuckDB.
   1. Use `s3 sync` to download the logs from S3: `./scripts/s3/download_logs.sh`. Note: if you have a lot of data, this can take a while when it is first run.
@@ -80,15 +80,15 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
   1. `./scripts/duckdb/drop_db.sh`
   1. Then repeat the installation
 
-## Validating terraform config
+## Validating the terraform config
 
 `./terraform/validate.sh`
 
-## Destroying infrastructure
+## Destroying the infrastructure
 
 `./terraform/destroy.sh`
 
-## Running tests
+## Running the tests
 
 `make lint`
 
