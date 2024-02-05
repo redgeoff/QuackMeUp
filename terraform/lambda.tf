@@ -89,9 +89,9 @@ resource "aws_lambda_function" "log_exporter_function" {
 
   environment {
     variables = {
-      project_name     = var.project_name
-      logs_bucket_name = var.logs_bucket_name
-      region           = var.region
+      PROJECT_NAME     = var.project_name
+      LOGS_BUCKET_NAME = var.logs_bucket_name
+      REGION           = var.region
     }
   }
 
