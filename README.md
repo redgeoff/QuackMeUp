@@ -86,6 +86,10 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
   - Email: quackmeup@example.com
   - Password: E!v_#nc$48pqfZJ
 
+## Troubleshooting
+
+DuckDB is incredibly fast because it stores a substantial amount of data in memory. If you encounter errors related to insufficient memory, it's advisable to open the Docker console and increase the memory allocation. In our experience, for processing 3GB of zipped logs, we needed to increase the memory allocation to 10GB.
+
 ## Starting fresh
 
   1. `docker-compose down`
