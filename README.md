@@ -67,6 +67,9 @@ After the logs have been updated, run the following pipeline to ingest the updat
   1. Run a Python script to extract the JSON payloads in the logs so that they can be analyzed with DuckDB: `make format_logs`
   1. Create a DuckDB table pointing to the logs: `./scripts/duckdb/import_logs.sh`
 
+If this is the first time executing the pipeline, you'll need to restart Metabase so that it loads the logs:
+`docker restart quackmeup-metabase-1`
+
 ## Accessing Metabase
 
 Visit [http://localhost:3000](http://localhost:3000) and log in with:
