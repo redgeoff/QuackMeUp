@@ -61,7 +61,8 @@ Open the AWS Console and navigate to CloudWatch Log Groups. For each log that yo
 
 ## Execute the pipeline
 
-  1. After the logs have been updated, run the following pipeline to ingest the updated data into DuckDB.
+After the logs have been updated, run the following pipeline to ingest the updated data into DuckDB:
+
   1. Use `s3 sync` to download the logs from S3: `./scripts/s3/download_logs.sh`. Note: if you have a lot of data, this can take a while when it is first run.
   1. Run a Python script to extract the JSON payloads in the logs so that they can be analyzed with DuckDB: `make format_logs`
   1. Create a DuckDB table pointing to the logs: `./scripts/duckdb/import_logs.sh`
