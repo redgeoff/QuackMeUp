@@ -6,12 +6,23 @@
 ## Overview
 QuackMeUp is an open-source, Python-based toolkit designed to simplify the integration and analysis of data from various sources like PostgreSQL and AWS CloudWatch, using the power of DuckDB and Metabase. It's a one-stop solution for software engineers and data analysts looking to quack their way through data aggregation, transformation, and visualization.
 
-**Key Features:**
+### Key Features
 - **Effortless Integration**: Seamlessly connect with PostgreSQL databases and CloudWatch logs.
 - **Python-Powered**: Leverage the simplicity and flexibility of Python for data manipulation.
 - **DuckDB at its Core**: Utilize DuckDB's OLAP capabilities for efficient data querying and analysis.
 - **Metabase Visualization**: Transform data into insights with intuitive Metabase dashboards.
 - **Modular Design**: Flexible architecture allows easy extension and customization.
+
+### End-to-End Data Pipeline for Business Analytics
+
+```mermaid
+graph TD
+    A[App Code] -->|Writes JSON Logs| B[AWS Lambda Function]
+    B -->|Exports Logs to S3| C[AWS S3 Sync]
+    C -->|Downloads Logs Locally| D[format_logs.py]
+    D -->|Extracts & Saves JSON| E[DuckDB]
+    E -->|Points to Postgres & JSON Logs| F[Metabase for Analysis]
+```
 
 ## Installation
 
