@@ -66,9 +66,7 @@ After the logs have been updated, run the following pipeline to ingest the updat
   1. Use `s3 sync` to download the logs from S3: `./scripts/s3/download_logs.sh`. Note: if you have a lot of data, this can take a while when it is first run.
   1. Run a Python script to extract the JSON payloads in the logs so that they can be analyzed with DuckDB: `make format_logs`
   1. Create a DuckDB table pointing to the logs: `./scripts/duckdb/import_logs.sh`
-
-If this is the first time executing the pipeline, you'll need to restart Metabase so that it loads the logs:
-`docker restart quackmeup-metabase-1`
+  1. Restart Metabase so that it loads the updated DuckDB: `docker restart quackmeup-metabase-1`
 
 ## Accessing Metabase
 
