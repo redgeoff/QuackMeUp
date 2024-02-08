@@ -50,16 +50,7 @@ services:
       - etc/presto
     volumes:
       - ./scripts/presto/etc:/opt/presto-server/etc
+      - ./ignored/formatted_logs:/usr/local/presto/data
     environment:
       - NODE_ENVIRONMENT=production
       - IS_COORDINATOR=true
-
-  # presto-worker:
-  #   image: prestodb/presto:latest
-  #   command:
-  #     - --server
-  #     - etc/presto
-  #   volumes:
-  #     - ./scripts/presto/etc:/usr/lib/presto/etc
-  #   environment:
-  #     - NODE_ENVIRONMENT=production
