@@ -37,7 +37,7 @@ def process_file(file_path: str, output_dir: str, input_dir: str) -> None:
         os.makedirs(output_file_dir)
 
     # Initialize an empty PyArrow Table
-    table = pa.Table.from_pandas(pd.DataFrame())
+    table = None
 
     with gzip.open(file_path, "rt", encoding="utf-8") as f_in, open(
         output_file_path, "w", encoding="utf-8"
@@ -46,13 +46,22 @@ def process_file(file_path: str, output_dir: str, input_dir: str) -> None:
             json_part = extract_json_part(line.strip())
             if is_json(json_part):
                 # Convert the JSON part to a DataFrame, then to a PyArrow Table
-                df = pd.read_json(json_part, orient="records")
+                json_str = json.dumps(json_part)
+
+                # Create a DataFrame with a single column named "json"
+                df = pd.DataFrame([json_str], columns=["json"])
+
                 new_table = pa.Table.from_pandas(df)
-                # Concatenate the new table with the existing one
-                table = pa.concat_tables([table, new_table])
+
+                if table is None:
+                    table = new_table
+                else:
+                    # Concatenate the new table with the existing one
+                    table = pa.concat_tables([table, new_table])
 
     # Write the final table to a Parquet file
-    pq.write_table(table, output_file_path)
+    if table is not None:
+        pq.write_table(table, output_file_path)
 
 
 def format_logs(input_dir: str, output_dir: str) -> None:
@@ -65,5 +74,5 @@ def format_logs(input_dir: str, output_dir: str) -> None:
 
 if __name__ == "__main__":
     input_dir = os.path.join(ignored_dir, "logs")
-    output_dir = os.path.join(ignored_dir, "formatted_logs")
+    output_dir = os.path.join(ignored_dir, "formatted_logs_parquet")
     format_logs(input_dir, output_dir)
