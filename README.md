@@ -88,7 +88,7 @@ Visit [http://localhost:3000](http://localhost:3000) and log in with:
 
 ## Troubleshooting
 
-DuckDB is incredibly fast because it stores a substantial amount of data in memory. If you encounter errors related to insufficient memory, it's advisable to open the Docker console and increase the memory allocation. In our experience, for processing 3GB of zipped logs, we needed to increase the memory allocation to 10GB.
+DuckDB is incredibly fast because it stores a substantial amount of data in memory. If you encounter errors related to insufficient memory, it's advisable to open the Docker console and increase the memory allocation. In our experience, for processing 3GB of zipped logs, we needed to increase the memory allocation to 10GB. Alternatively, you can modify the format_logs.py script so that it filters out any JSON data that you don’t need.
 
 ## Starting fresh
 
