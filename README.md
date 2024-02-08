@@ -60,7 +60,7 @@ graph TD
 
 ### Tag target logs for export
 
-Open the AWS Console and navigate to CloudWatch Log Groups. For each log that you wish to be exported to S3, simply add a tag with the name=`ExportToS3` and value=`true`. The log exporter Lambda runs every 4 hours so you'll have to wait at least 4 hours before you start seeing any data in the S3 bucket.
+Open the AWS Console and navigate to CloudWatch Log Groups. For each log that you wish to be exported to S3, simply add a tag with the key=`ExportToS3` and value=`true`. The log exporter Lambda runs every 4 hours so you'll have to wait at least 4 hours before you start seeing any data in the S3 bucket.
 
 ### Install QuackMeUp
 
