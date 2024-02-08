@@ -40,3 +40,26 @@ services:
       - 3000
     ports:
       - 3000:3000
+
+  presto-coordinator:
+    image: prestodb/presto:latest
+    ports:
+      - "8080:8080"
+    command:
+      - --server
+      - etc/presto
+    volumes:
+      - ./scripts/presto/etc:/opt/presto-server/etc
+    environment:
+      - NODE_ENVIRONMENT=production
+      - IS_COORDINATOR=true
+
+  # presto-worker:
+  #   image: prestodb/presto:latest
+  #   command:
+  #     - --server
+  #     - etc/presto
+  #   volumes:
+  #     - ./scripts/presto/etc:/usr/lib/presto/etc
+  #   environment:
+  #     - NODE_ENVIRONMENT=production
