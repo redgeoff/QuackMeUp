@@ -41,6 +41,31 @@ services:
     ports:
       - 3000:3000
 
+  hive-metastore-db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: hive
+      POSTGRES_USER: hive
+      POSTGRES_DB: metastore
+    volumes:
+      - ./ignored/hive/metastore-db:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    environment:
+      HIVE_DB_HOST: hive-metastore-db
+      HIVE_DB_USERNAME: hive
+      HIVE_DB_PASSWORD: hive
+      HIVE_DB_DATABASE: metastore
+    depends_on:
+      - hive-metastore-db
+    ports:
+      - '9083:9083'
+    volumes:
+      - ./ignored/tmp_parquet:/hive/data
+
   presto-coordinator:
     image: prestodb/presto:latest
     ports:
@@ -50,7 +75,12 @@ services:
       - etc/presto
     volumes:
       - ./scripts/presto/etc:/opt/presto-server/etc
-      - ./ignored/formatted_logs:/usr/local/presto/data
+      # - ./ignored/formatted_logs:/usr/local/presto/data
+      # - ./ignored/formatted_logs_parquet:/usr/local/presto/data
+      # - ./ignored/tmp:/usr/local/presto/data
+      - ./ignored/tmp_parquet:/usr/local/presto/data
     environment:
       - NODE_ENVIRONMENT=production
       - IS_COORDINATOR=true
+    depends_on:
+      - hive-metastore
