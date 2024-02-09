@@ -54,6 +54,7 @@ services:
 
   hive-metastore:
     image: bde2020/hive:2.3.2-postgresql-metastore
+    # image: bde2020/hive-metastore-postgresql
     environment:
       HIVE_DB_HOST: hive-metastore-db
       HIVE_DB_USERNAME: hive
@@ -65,6 +66,19 @@ services:
       - '9083:9083'
     volumes:
       - ./ignored/tmp_parquet:/hive/data
+      - ./scripts/hive/conf:/opt/hive/conf
+
+  minio:
+    hostname: minio
+    image: minio/minio
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./ignored/minio-data:/data
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    command: server /data
 
   presto-coordinator:
     image: prestodb/presto:latest
