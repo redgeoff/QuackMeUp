@@ -169,4 +169,4 @@ terraform.tfstate.backup
 # Misc
 .env
 .DS_Store
-scripts/presto/etc/node.properties
+scripts/trino/etc/node.properties
