@@ -1,5 +1,7 @@
 `make format_logs_parquet`
 
+mkdir ./ignored/minio-data
+
 mkdir -p ./ignored/trino/date=2024-01-08
 mkdir -p ./ignored/trino/date=2023-11-23
 cp ./ignored/formatted_logs_parquet/exportedlogs/9c24a6ca-2940-46db-ae68-35fdbfc31c06/2024-01-08-\[\$LATEST\]0330663a5bde43789318e56dff29144b/000000.parquet ./ignored/trino/date=2024-01-08
