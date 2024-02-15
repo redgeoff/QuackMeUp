@@ -41,24 +41,26 @@ services:
     ports:
       - 3000:3000
 
-  hive-metastore-db:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: hive
-      POSTGRES_USER: hive
-      POSTGRES_DB: metastore
-    volumes:
-      - ./ignored/hive/metastore-db:/var/lib/postgresql/data
-    ports:
-      - '5433:5432'
-
   trino:
     hostname: trino
-    image: 'trinodb/trino:351'
+    # image: 'trinodb/trino:351'
+    image: 'trinodb/trino'
     ports:
       - '8080:8080'
     volumes:
-      - ./scripts/trino/etc:/usr/lib/trino/etc:ro
+      # - ./scripts/trino/etc:/usr/lib/trino/etc:ro
+      - ./scripts/trino/etc:/etc/trino
+
+  # hive-metastore-db:
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_PASSWORD: hive
+  #     POSTGRES_USER: hive
+  #     POSTGRES_DB: metastore
+  #   volumes:
+  #     - ./ignored/hive/metastore-db:/var/lib/postgresql/data
+  #   ports:
+  #     - '5433:5432'
 
   mariadb:
     hostname: mariadb
@@ -73,7 +75,7 @@ services:
 
   hive-metastore:
     hostname: hive-metastore
-    image: 'bitsondatadev/hive-metastore:latest'
+    image: 'bitsondatadev/hive-metastore'
     ports:
       - '9083:9083' # Metastore Thrift
     volumes:
@@ -87,7 +89,7 @@ services:
 
   minio:
     hostname: minio
-    image: 'minio/minio:RELEASE.2021-01-08T21-18-21Z'
+    image: 'minio/minio'
     ports:
       - '9000:9000'
     volumes:
