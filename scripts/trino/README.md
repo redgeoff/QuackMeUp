@@ -61,7 +61,8 @@ LIMIT 15;
 select
   date,
   json_extract_scalar(json, '$.asctime') as asctime,
-  *
+  json_extract_scalar(json, '$.request.path') as path,
+  json
 from mindful_athena
 where date='2023-11-23'
 limit 15;
