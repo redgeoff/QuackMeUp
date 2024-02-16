@@ -45,11 +45,8 @@ def process_file(file_path: str, output_dir: str, input_dir: str) -> None:
         for line in f_in:
             json_part = extract_json_part(line.strip())
             if is_json(json_part):
-                # Convert the JSON part to a DataFrame, then to a PyArrow Table
-                json_str = json.dumps(json_part)
-
                 # Create a DataFrame with a single column named "json"
-                df = pd.DataFrame([json_str], columns=["json"])
+                df = pd.DataFrame([json_part], columns=["json"])
 
                 new_table = pa.Table.from_pandas(df)
 

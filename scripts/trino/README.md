@@ -42,4 +42,26 @@ SELECT date,* FROM minio.logs.logs where date='2023-11-23' LIMIT 15;
 
 SELECT date,* FROM minio.logs.logs where date>='2023-11-23' LIMIT 15;
 
+SELECT
+  date,
+  json_extract_scalar(json, '$.asctime') as asctime,
+  json_extract_scalar(json, '$.request.path') as path,
+  json
+FROM minio.logs.logs
+where date='2023-11-23'
+  -- AND json_extract_scalar(json, '$.request.path')='/oauth/authorize'
+LIMIT 15;
 
+
+
+
+
+# ON AWS
+
+select
+  date,
+  json_extract_scalar(json, '$.asctime') as asctime,
+  *
+from mindful_athena
+where date='2023-11-23'
+limit 15;
